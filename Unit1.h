@@ -9,6 +9,8 @@
 #include <Vcl.Forms.hpp>
 #include <Vcl.ExtCtrls.hpp>
 #include <Vcl.Menus.hpp>
+
+#include <map>
 //---------------------------------------------------------------------------
 struct Coords {
 	int x;
@@ -17,6 +19,29 @@ struct Coords {
 struct Vector2 {
 	Coords from;
 	Coords to;
+};
+//---------------------------------------------------------------------------
+class TTexture {
+private:
+	bool isLoaded = false;
+	String texturePath;
+	Graphics::TBitmap* imageBitmap;
+public:
+	TTexture(String _texturePath);
+	void Load();
+    void Unload();
+};
+//---------------------------------------------------------------------------
+class TTextureStorage {
+private:
+	std::map<String, TTexture> textures;
+public:
+	TTextureStorage();
+	void DefineTexture(String name, String path);
+	void LoadTexture(String name);
+	void UnloadTexture(String name);
+	void LoadAllTextures();
+	void UnloadAllTextures();
 };
 //---------------------------------------------------------------------------
 class TDrawingScreen
