@@ -19,6 +19,12 @@ __fastcall TMainForm::TMainForm(TComponent* Owner)
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::FormCreate(TObject *Sender)
 {
-	MainForm -> DrawScreen = new TDrawingScreen(Screen);
+	this->DrawScreen = new TDrawingScreen(Screen);
+	this->TextureStorage = new TTextureStorage();
+    this->InitializeTextures();
 }
 //---------------------------------------------------------------------------
+
+void TMainForm::InitializeTextures() {
+    //Add textures here
+}
