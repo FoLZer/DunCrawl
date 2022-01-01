@@ -10,18 +10,7 @@
 #include <Vcl.ExtCtrls.hpp>
 #include <Vcl.Menus.hpp>
 
-#include "Texture.h"
-#include "TextureStorage.h"
 #include "DrawingScreen.h"
-//---------------------------------------------------------------------------
-struct Coords {
-	int x;
-	int y;
-};
-struct Vector2 {
-	Coords from;
-	Coords to;
-};
 //---------------------------------------------------------------------------
 class TMainForm : public TForm
 {

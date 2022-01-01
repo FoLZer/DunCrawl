@@ -5,7 +5,8 @@
 //---------------------------------------------------------------------------
 #endif
 
-
+#include <vcl.h>
+#include "Texture.h"
 #include <map>
 
 class TTextureStorage {

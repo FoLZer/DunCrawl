@@ -5,6 +5,10 @@
 //---------------------------------------------------------------------------
 #endif
 
+#include <Graphics.hpp>
+#include <vcl.h>
+#include "Utils.h"
+
 class TDrawingScreen
 {
 private:

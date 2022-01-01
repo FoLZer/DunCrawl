@@ -6,6 +6,9 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 
+#include <Graphics.hpp>
+#include <vcl.h>
+
 TDrawingScreen::TDrawingScreen(TImage* image) {
 	this->_image = image;
     this->_imageBuf = new Graphics::TBitmap;
