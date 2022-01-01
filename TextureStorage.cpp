@@ -7,7 +7,7 @@
 #pragma package(smart_init)
 
 TTextureStorage::TTextureStorage() {
-
+    this->textures.clear(); //sanity check
 }
 
 TTextureStorage::~TTextureStorage() {
@@ -23,6 +23,13 @@ void TTextureStorage::DefineTexture(const String name, const String path) {
 	}
 	TTexture* texture = new TTexture(path);
 	this->textures.insert({name, texture});
+}
+
+void TTextureStorage::UndefineTexture(const String name) {
+	if(this->textures.find(name) != this->textures.end()) {
+		delete this->textures.at(name);
+        this->textures.erase(name);
+    }
 }
 
 void TTextureStorage::LoadTexture(const String name) {
