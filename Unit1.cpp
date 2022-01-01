@@ -21,11 +21,17 @@ void __fastcall TMainForm::FormCreate(TObject *Sender)
 	this->TextureStorage = new TTextureStorage();
 	this->InitializeTextures();
 	this->DrawScreen->DrawRect({{500,500},{599,599}},clBlack,clRed); // Debug rect
-    this->DrawScreen->Draw();
+	this->DrawScreen->DrawTexture({{100,100},{200,200}}, this->TextureStorage->GetTexture("Wood"));
+	this->DrawScreen->Draw();
 }
 //---------------------------------------------------------------------------
 
 void TMainForm::InitializeTextures() {
-	//Add textures here
+	//Define textures here
 	//this->TextureStorage->DefineTexture("Texture1", "path/to/texture/Texture1");
+	this->TextureStorage->DefineTexture("Wood", "../../textures/Wood.bmp");
+
+	//Load textures here
+	this->TextureStorage->LoadTexture("Wood");
+
 }

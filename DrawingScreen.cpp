@@ -48,3 +48,8 @@ void TDrawingScreen::DrawRect(const Vector2 vec, const TColor colBounds, const T
 void TDrawingScreen::Draw() {
 	this->_image->Canvas->Draw(0,0,this->_imageBuf);
 }
+
+void TDrawingScreen::DrawTexture(const Vector2 bounds, TTexture* texture) {
+	Graphics::TBitmap* bitmap = texture->getBitmap();
+	this->_imageBuf->Canvas->StretchDraw({bounds.from.x,bounds.from.y,bounds.to.x,bounds.to.y}, bitmap);
+}

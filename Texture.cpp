@@ -35,3 +35,10 @@ void TTexture::Unload() {
 bool TTexture::isLoaded() {
     return this->_isLoaded;
 }
+
+Graphics::TBitmap* TTexture::getBitmap() {
+	if(!this->isLoaded()) {
+		throw "Tried to get unloaded bitmap from texture!";
+	}
+	return this->imageBitmap;
+}
