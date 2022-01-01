@@ -10,11 +10,12 @@
 
 class TTexture {
 private:
-	bool isLoaded = false;
+	bool _isLoaded = false;
 	String texturePath;
 	Graphics::TBitmap* imageBitmap;
 public:
-	TTexture(String _texturePath);
+	TTexture(const String _texturePath);
 	void Load();
-    void Unload();
+	void Unload();
+    bool isLoaded();
 };
