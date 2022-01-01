@@ -11,14 +11,22 @@
 
 TDrawingScreen::TDrawingScreen(TImage* image) {
 	this->_image = image;
-    this->_imageBuf = new Graphics::TBitmap;
+	this->_imageBuf = new Graphics::TBitmap;
+	this->_imageBuf->SetSize(this->_image->Width, this->_image->Height);
 }
+
+TDrawingScreen::~TDrawingScreen() {
+	delete this->_imageBuf;
+}
+
 void TDrawingScreen::MoveTo(const Coords c) {
 	this->_imageBuf->Canvas->MoveTo(c.x,c.y);
 }
+
 void TDrawingScreen::LineTo(const Coords c) {
 	this->_imageBuf->Canvas->LineTo(c.x,c.y);
 }
+
 void TDrawingScreen::DrawLine(const Vector2 vec, const TColor col) {
 	TColor prevCol = this->_imageBuf->Canvas->Pen->Color;
 	this->_imageBuf->Canvas->Pen->Color = col;
@@ -26,6 +34,7 @@ void TDrawingScreen::DrawLine(const Vector2 vec, const TColor col) {
 	this->LineTo(vec.to);
 	this->_imageBuf->Canvas->Pen->Color = prevCol;
 }
+
 void TDrawingScreen::DrawRect(const Vector2 vec, const TColor colBounds, const TColor colIn) {
 	TColor prevPenCol = this->_imageBuf->Canvas->Pen->Color;
 	TColor prevBrushCol = this->_imageBuf->Canvas->Brush->Color;
@@ -35,6 +44,7 @@ void TDrawingScreen::DrawRect(const Vector2 vec, const TColor colBounds, const T
 	this->_imageBuf->Canvas->Pen->Color = prevPenCol;
 	this->_imageBuf->Canvas->Brush->Color = prevBrushCol;
 }
+
 void TDrawingScreen::Draw() {
-    this->_image->Canvas->Draw(0,0,this->_imageBuf);
+	this->_image->Canvas->Draw(0,0,this->_imageBuf);
 }

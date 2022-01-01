@@ -8,8 +8,6 @@
 #pragma package(smart_init)
 #pragma resource "*.dfm"
 //---------------------------------------------------------------------------
-
-//---------------------------------------------------------------------------
 TMainForm *MainForm;
 //---------------------------------------------------------------------------
 __fastcall TMainForm::TMainForm(TComponent* Owner)
@@ -21,10 +19,13 @@ void __fastcall TMainForm::FormCreate(TObject *Sender)
 {
 	this->DrawScreen = new TDrawingScreen(Screen);
 	this->TextureStorage = new TTextureStorage();
-    this->InitializeTextures();
+	this->InitializeTextures();
+	this->DrawScreen->DrawRect({{500,500},{599,599}},clBlack,clRed); // Debug rect
+    this->DrawScreen->Draw();
 }
 //---------------------------------------------------------------------------
 
 void TMainForm::InitializeTextures() {
-    //Add textures here
+	//Add textures here
+	//this->TextureStorage->DefineTexture("Texture1", "path/to/texture/Texture1");
 }
