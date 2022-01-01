@@ -11,7 +11,7 @@
 
 class TTextureStorage {
 private:
-	std::map<String, TTexture> textures;
+	std::map<String, TTexture*> textures;
 public:
 	TTextureStorage();
     ~TTextureStorage();
