@@ -14,6 +14,7 @@ private:
 	std::map<String, TTexture> textures;
 public:
 	TTextureStorage();
+    ~TTextureStorage();
 	void DefineTexture(const String name, const String path);
 	void LoadTexture(const String name);
 	void UnloadTexture(const String name);

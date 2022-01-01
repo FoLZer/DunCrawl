@@ -21,4 +21,5 @@ private:
 	void DrawRect(const Vector2 vec, const TColor colBounds, const TColor colIn);
 public:
 	TDrawingScreen(TImage* image);
+    ~TDrawingScreen();
 };

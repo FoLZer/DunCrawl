@@ -15,6 +15,7 @@ private:
 	Graphics::TBitmap* imageBitmap;
 public:
 	TTexture(const String _texturePath);
+    ~TTexture();
 	void Load();
 	void Unload();
     bool isLoaded();

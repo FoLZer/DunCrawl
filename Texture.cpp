@@ -10,15 +10,26 @@ TTexture::TTexture(const String _texturePath) {
 	this->texturePath = _texturePath;
 }
 
+TTexture::~TTexture() {
+	if(this->_isLoaded) {
+		delete this->imageBitmap;
+    }
+}
+
 void TTexture::Load() {
+	if(this->_isLoaded) {
+		throw "Tried to load Texture without unloading previous one!";
+	}
 	this->imageBitmap = new Graphics::TBitmap;
 	this->imageBitmap->LoadFromFile(this->texturePath);
 	this->_isLoaded = true;
 }
 
 void TTexture::Unload() {
-	delete this->imageBitmap;
-	this->_isLoaded = false;
+	if(this->_isLoaded) {
+        delete this->imageBitmap;
+		this->_isLoaded = false;
+	}
 }
 
 bool TTexture::isLoaded() {
