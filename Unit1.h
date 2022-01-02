@@ -11,7 +11,7 @@
 #include <Vcl.Menus.hpp>
 
 #include "DrawingScreen.h"
-#include "TextureStorage.h"
+#include "World.h"
 //---------------------------------------------------------------------------
 class TMainForm : public TForm
 {
@@ -22,8 +22,10 @@ __published:	// IDE-managed Components
 	void __fastcall FormCreate(TObject *Sender);
 private:	// User declarations
 	TDrawingScreen *DrawScreen;
-	TTextureStorage *TextureStorage;
-    void InitializeTextures();
+    TWorld *World;
+	void InitializeTextures();
+	void LoadTextures();
+    void InitializeWorld();
 public:		// User declarations
 	__fastcall TMainForm(TComponent* Owner);
 };

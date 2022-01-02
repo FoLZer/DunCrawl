@@ -18,20 +18,27 @@ __fastcall TMainForm::TMainForm(TComponent* Owner)
 void __fastcall TMainForm::FormCreate(TObject *Sender)
 {
 	this->DrawScreen = new TDrawingScreen(Screen);
-	this->TextureStorage = new TTextureStorage();
+	this->InitializeWorld();
 	this->InitializeTextures();
-	this->DrawScreen->DrawRect({{500,500},{599,599}},clBlack,clRed); // Debug rect
-	this->DrawScreen->DrawTexture({{100,100},{200,200}}, this->TextureStorage->GetTexture("Wood"));
+	this->LoadTextures();
+    this->World->InitializeWorld(3,3);
+	this->World->PopulateStartArea();
+    this->World->DrawFrame(this->DrawScreen);
+
 	this->DrawScreen->Draw();
 }
 //---------------------------------------------------------------------------
 
 void TMainForm::InitializeTextures() {
 	//Define textures here
-	//this->TextureStorage->DefineTexture("Texture1", "path/to/texture/Texture1");
-	this->TextureStorage->DefineTexture("Wood", "../../textures/Wood.bmp");
+	this->World->TextureStorage->DefineTexture("Wood", "textures/Wood.bmp");
+}
 
-	//Load textures here
-	this->TextureStorage->LoadTexture("Wood");
+void TMainForm::LoadTextures() {
+    //Load textures here
+	this->World->TextureStorage->LoadTexture("Wood");
+}
 
+void TMainForm::InitializeWorld() {
+    this->World = new TWorld();
 }
