@@ -7,15 +7,13 @@
 //---------------------------------------------------------------------------
 #endif
 
-#include "Utils.h"
 #include "DrawingScreen.h"
 
 class Cell {
-private:
-	Coords loc;
+protected:
+    Coords loc;
 public:
-	Cell();
-	Coords getLoc();
-	void setLoc(Coords _loc);
+	Cell(Coords _loc);
+    Coords getLoc();
     virtual void DoRender(TDrawingScreen* Screen,int x,int y,int width,int height) {}
 };

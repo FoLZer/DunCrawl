@@ -6,6 +6,8 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 
+#include <algorithm>
+
 TWorld::TWorld() {
     this->TextureStorage = new TTextureStorage();
 }
@@ -30,9 +32,9 @@ int TWorld::LocToArI(const int x, const int y) {
 }
 
 void TWorld::PopulateStartArea() {
-	for(int i = 0;i < 3; i++) {
-		for(int i1 = 0;i1<3;i1++) {
-			Floor* f = new Floor();
+	for(int i = 0;i < 7; i++) {
+		for(int i1 = 0;i1<7;i1++) {
+			Floor* f = new Floor({i,i1});
 			f->setTexture(this->TextureStorage->GetTexture("Wood"));
 			int a = this->LocToArI(i,i1);
 			this->_world[a] = f;
@@ -47,10 +49,37 @@ void TWorld::InitializeWorld(const int _width, const int _height) {
 }
 
 void TWorld::DrawFrame(TDrawingScreen* Screen) {
+    Screen->Clear();
+	Cell* centerCell = this->player->getLoc();
+    Coords centerLoc = centerCell->getLoc();
 	for(int x=0;x<this->width;x++) {
 		for(int y=0;y<this->height;y++) {
 			Cell* c = this->getCellByLoc(x,y);
-            c->DoRender(Screen,50*(x+1),50*(y+1),50,50);
+			if(c == NULL) {
+                continue;
+			}
+			c->DoRender(Screen,50*(x-centerLoc.x)+Screen->getWidth()/2-25,50*(y-centerLoc.y)+Screen->getHeight()/2-25,50,50);
 		}
     }
+}
+
+void TWorld::SetupPlayer() {
+	Floor* floor = static_cast<Floor*>(this->getCellByLoc(0,0));
+	this->player = this->createObject<Player>(floor);
+}
+
+template<class T> T* TWorld::createObject(Cell* loc) {
+	T* obj = new T(loc);
+	int n = this->objects.size();
+	this->objects.reserve(n+1);
+	this->objects[n] = obj;
+    return obj;
+}
+
+void TWorld::MovePlayer(int r_x, int r_y) {
+	Cell* curCel = this->player->getLoc();
+	Coords curLoc = curCel->getLoc();
+	int new_x = std::max(std::min(curLoc.x+r_x,this->width-1),0);
+	int new_y = std::max(std::min(curLoc.y+r_y,this->height-1),0);
+	this->player->MoveTo(this->getCellByLoc(new_x, new_y));
 }

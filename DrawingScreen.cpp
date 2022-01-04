@@ -53,3 +53,15 @@ void TDrawingScreen::DrawTexture(const Vector2 bounds, TTexture* texture) {
 	Graphics::TBitmap* bitmap = texture->getBitmap();
 	this->_imageBuf->Canvas->StretchDraw({bounds.from.x,bounds.from.y,bounds.to.x,bounds.to.y}, bitmap);
 }
+
+int TDrawingScreen::getWidth() {
+	return this->_imageBuf->Width;
+}
+
+int TDrawingScreen::getHeight() {
+    return this->_imageBuf->Height;
+}
+
+void TDrawingScreen::Clear() {
+    this->DrawRect({{0,0},{this->_imageBuf->Width,this->_imageBuf->Height}},clWhite,clWhite);
+}

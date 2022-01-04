@@ -2,14 +2,10 @@
 
 #pragma hdrstop
 
-#include "Cell.h"
+#include "MovableObject.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 
-Cell::Cell(Coords _loc) {
+void MovableObject::MoveTo(Cell* _loc) {
     this->loc = _loc;
-}
-
-Coords Cell::getLoc() {
-    return this->loc;
 }

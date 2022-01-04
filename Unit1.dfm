@@ -31,4 +31,9 @@ object MainForm: TMainForm
       Caption = 'File'
     end
   end
+  object Timer1: TTimer
+    OnTimer = Timer1Timer
+    Left = 568
+    Top = 504
+  end
 end

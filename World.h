@@ -13,6 +13,7 @@
 #include "Utils.h"
 #include "TextureStorage.h"
 #include "DrawingScreen.h"
+#include "Player.h"
 
 class TWorld {
 private:
@@ -20,7 +21,10 @@ private:
 	int width;
 	int height;
 	std::vector<Cell*> _world;
-    int LocToArI(const int x, const int y);
+    std::vector<CellObject*> objects;
+    Player* player;
+	int LocToArI(const int x, const int y);
+	template<class T> T* createObject(Cell* loc);
 public:
 	TWorld();
 	~TWorld();
@@ -29,5 +33,7 @@ public:
 	void PopulateStartArea();
 	Cell* getCellByLoc(Coords loc);
 	Cell* getCellByLoc(const int x, const int y);
-    void DrawFrame(TDrawingScreen* Screen);
+	void DrawFrame(TDrawingScreen* Screen);
+	void SetupPlayer();
+    void MovePlayer(int r_x, int r_y);
 };

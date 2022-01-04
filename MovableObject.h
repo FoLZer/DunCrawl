@@ -1,20 +1,15 @@
-#pragma once
-
 //---------------------------------------------------------------------------
 
-#ifndef CellObjectH
-#define CellObjectH
+#ifndef MovableObjectH
+#define MovableObjectH
 //---------------------------------------------------------------------------
 #endif
 
 #include "Cell.h"
-#include "Utils.h"
+#include "CellObject.h"
 
-class CellObject {
-protected:
-    Cell* loc;
+class MovableObject : public CellObject {
 public:
-	CellObject(Cell* _loc);
-	~CellObject();
-    Cell* getLoc();
+    using CellObject::CellObject;
+	void MoveTo(Cell* _loc);
 };

@@ -6,10 +6,6 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 
-Floor::Floor() {
-
-}
-
 void Floor::setTexture(TTexture* _texture) {
 	this->texture = _texture;
 }

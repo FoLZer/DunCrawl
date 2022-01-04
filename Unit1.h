@@ -19,7 +19,9 @@ __published:	// IDE-managed Components
 	TImage *Screen;
 	TMainMenu *MainMenu1;
 	TMenuItem *File1;
+	TTimer *Timer1;
 	void __fastcall FormCreate(TObject *Sender);
+	void __fastcall Timer1Timer(TObject *Sender);
 private:	// User declarations
 	TDrawingScreen *DrawScreen;
     TWorld *World;
