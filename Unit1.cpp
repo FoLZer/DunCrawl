@@ -10,6 +10,12 @@
 
 #include <chrono>
 #include <thread>
+
+#define KEY_UP 'w'
+#define KEY_DOWN 's'
+#define KEY_LEFT 'a'
+#define KEY_RIGHT 'd'
+
 //---------------------------------------------------------------------------
 TMainForm *MainForm;
 //---------------------------------------------------------------------------
@@ -49,13 +55,38 @@ void TMainForm::LoadTextures() {
 void TMainForm::InitializeWorld() {
     this->World = new TWorld();
 }
-void __fastcall TMainForm::Timer1Timer(TObject *Sender)
+
+void __fastcall TMainForm::FormKeyPress(TObject *Sender, System::WideChar &Key)
 {
-	this->World->MovePlayer(0,1);
-	this->World->DrawFrame(this->DrawScreen);
-    this->DrawScreen->DrawLine({{Screen->Width/2,0},{Screen->Width/2,Screen->Height}},clBlack);
-    this->DrawScreen->DrawLine({{0,Screen->Height/2},{Screen->Width,Screen->Height/2}},clBlack);
-	this->DrawScreen->Draw();
+	bool redraw = false;
+	switch(Key) {
+		case KEY_UP: {
+			this->World->MovePlayer(0,-1);
+			redraw = true;
+			break;
+		}
+		case KEY_DOWN: {
+			this->World->MovePlayer(0,1);
+			redraw = true;
+			break;
+		}
+		case KEY_LEFT: {
+			this->World->MovePlayer(-1,0);
+			redraw = true;
+			break;
+		}
+		case KEY_RIGHT: {
+			this->World->MovePlayer(1,0);
+            redraw = true;
+			break;
+        }
+	}
+	if(redraw) {
+        this->World->DrawFrame(this->DrawScreen);
+		this->DrawScreen->DrawLine({{Screen->Width/2,0},{Screen->Width/2,Screen->Height}},clBlack);
+		this->DrawScreen->DrawLine({{0,Screen->Height/2},{Screen->Width,Screen->Height/2}},clBlack);
+		this->DrawScreen->Draw();
+	}
 }
 //---------------------------------------------------------------------------
 

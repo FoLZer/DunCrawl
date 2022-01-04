@@ -16,6 +16,7 @@ object MainForm: TMainForm
   Menu = MainMenu1
   OldCreateOrder = False
   OnCreate = FormCreate
+  OnKeyPress = FormKeyPress
   PixelsPerInch = 96
   TextHeight = 13
   object Screen: TImage
@@ -30,10 +31,5 @@ object MainForm: TMainForm
     object File1: TMenuItem
       Caption = 'File'
     end
-  end
-  object Timer1: TTimer
-    OnTimer = Timer1Timer
-    Left = 568
-    Top = 504
   end
 end

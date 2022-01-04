@@ -12,6 +12,7 @@
 
 #include "DrawingScreen.h"
 #include "World.h"
+#include <Vcl.ComCtrls.hpp>
 //---------------------------------------------------------------------------
 class TMainForm : public TForm
 {
@@ -19,9 +20,8 @@ __published:	// IDE-managed Components
 	TImage *Screen;
 	TMainMenu *MainMenu1;
 	TMenuItem *File1;
-	TTimer *Timer1;
 	void __fastcall FormCreate(TObject *Sender);
-	void __fastcall Timer1Timer(TObject *Sender);
+	void __fastcall FormKeyPress(TObject *Sender, System::WideChar &Key);
 private:	// User declarations
 	TDrawingScreen *DrawScreen;
     TWorld *World;
