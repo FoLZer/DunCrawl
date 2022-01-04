@@ -18,7 +18,6 @@
 
 class TWorld {
 private:
-    bool isInitialized = false;
 	int width;
 	int height;
 	std::vector<Cell*> _world;

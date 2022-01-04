@@ -30,7 +30,7 @@ void __fastcall TMainForm::FormCreate(TObject *Sender)
 	this->InitializeWorld();
 	this->InitializeTextures();
 	this->LoadTextures();
-    this->World->InitializeWorld(7,7);
+    this->World->InitializeWorld(50,50);
 	this->World->PopulateStartArea();
 	this->World->SetupPlayer();
 	this->World->DrawFrame(this->DrawScreen);
