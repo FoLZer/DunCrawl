@@ -13,3 +13,15 @@ Cell::Cell(Coords _loc) {
 Coords Cell::getLoc() {
     return this->loc;
 }
+
+void Cell::setTexture(TTexture* _texture) {
+	this->texture = _texture;
+}
+
+TTexture* Cell::getTexture() {
+	return this->texture;
+}
+
+bool Cell::isWall() {
+    return false;
+}

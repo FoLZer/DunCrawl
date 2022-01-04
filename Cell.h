@@ -11,9 +11,13 @@
 
 class Cell {
 protected:
-    Coords loc;
+	Coords loc;
+	TTexture* texture;
 public:
 	Cell(Coords _loc);
     Coords getLoc();
-    virtual void DoRender(TDrawingScreen* Screen,int x,int y,int width,int height) {}
+	virtual void DoRender(TDrawingScreen* Screen,int x,int y,int width,int height) {}
+	virtual bool isWall();
+	void setTexture(TTexture* _texture);
+	TTexture* getTexture();
 };

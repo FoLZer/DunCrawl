@@ -1,18 +1,15 @@
-#pragma once
-
 //---------------------------------------------------------------------------
 
-#ifndef FloorH
-#define FloorH
+#ifndef WallH
+#define WallH
 //---------------------------------------------------------------------------
 #endif
 
-#include "CellObject.h"
 #include "Cell.h"
-#include "Texture.h"
 
-class Floor : public Cell {
+class Wall : public Cell {
 public:
+	bool isWall();
 	using Cell::Cell;
-	void DoRender(TDrawingScreen* Screen,int x,int y,int width,int height);
+    void DoRender(TDrawingScreen* Screen,int x,int y,int width,int height);
 };

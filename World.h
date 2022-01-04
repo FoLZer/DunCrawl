@@ -10,6 +10,7 @@
 
 #include "Cell.h"
 #include "Floor.h"
+#include "Wall.h"
 #include "Utils.h"
 #include "TextureStorage.h"
 #include "DrawingScreen.h"
