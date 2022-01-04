@@ -9,7 +9,6 @@
 
 class Wall : public Cell {
 public:
-	bool isWall();
-	using Cell::Cell;
+	Wall(Coords _loc);
     void DoRender(TDrawingScreen* Screen,int x,int y,int width,int height);
 };

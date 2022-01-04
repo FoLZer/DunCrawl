@@ -103,12 +103,12 @@ void TWorld::MovePlayer(int r_x, int r_y) {
 	Coords curLoc = curCel->getLoc();
 	Cell* c;
 	int new_x = std::max(std::min(curLoc.x+r_x,this->width-1),0);
-	while((c = this->getCellByLoc(new_x,curLoc.y)) != NULL && c->isWall()) {
+	while((c = this->getCellByLoc(new_x,curLoc.y)) != NULL && !c->isPassable()) {
 		int s = -sgn(r_x);
 		new_x += s == 0 ? 1 : s;
 	}
 	int new_y = std::max(std::min(curLoc.y+r_y,this->height-1),0);
-	while((c = this->getCellByLoc(curLoc.x,new_y)) != NULL && c->isWall()) {
+	while((c = this->getCellByLoc(curLoc.x,new_y)) != NULL && !c->isPassable()) {
 		int s = -sgn(r_y);
 		new_y += s == 0 ? 1 : s;
 	}

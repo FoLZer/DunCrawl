@@ -6,8 +6,7 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 
-bool Wall::isWall() {
-    return true;
+Wall::Wall(Coords _loc) : Cell(_loc) {
 }
 
 void Wall::DoRender(TDrawingScreen* Screen,int x,int y,int width,int height) {

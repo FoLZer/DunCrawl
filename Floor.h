@@ -13,6 +13,6 @@
 
 class Floor : public Cell {
 public:
-	using Cell::Cell;
+	Floor(Coords _loc);
 	void DoRender(TDrawingScreen* Screen,int x,int y,int width,int height);
 };

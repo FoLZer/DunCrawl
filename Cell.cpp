@@ -22,6 +22,6 @@ TTexture* Cell::getTexture() {
 	return this->texture;
 }
 
-bool Cell::isWall() {
-    return false;
+bool Cell::isPassable() {
+    return properties & PASSABLE;
 }
