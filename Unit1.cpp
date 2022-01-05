@@ -46,12 +46,14 @@ void TMainForm::InitializeTextures() {
 	//Define textures here
 	this->World->TextureStorage->DefineTexture("Wood", "textures/Wood.bmp");
 	this->World->TextureStorage->DefineTexture("Wall", "textures/Wall.bmp");
+	this->World->TextureStorage->DefineTexture("Water", "textures/Water.bmp");
 }
 
 void TMainForm::LoadTextures() {
     //Load textures here
 	this->World->TextureStorage->LoadTexture("Wood");
-    this->World->TextureStorage->LoadTexture("Wall");
+	this->World->TextureStorage->LoadTexture("Wall");
+	this->World->TextureStorage->LoadTexture("Water");
 }
 
 void TMainForm::InitializeWorld() {

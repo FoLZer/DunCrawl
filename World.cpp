@@ -13,7 +13,7 @@ const char map[7][7] =
 	{'w','w','w','w','f','w','w'},
 	{'w','f','f','f','f','f','w'},
 	{'w','f','f','f','w','f','w'},
-	{'w','w','w','w','f','f','f'}
+	{'w','w','w','w','a','a','a'}
 };
 
 TWorld::TWorld() {
@@ -54,6 +54,11 @@ void TWorld::PopulateStartArea() {
 					c->setTexture(this->TextureStorage->GetTexture("Wood"));
 					break;
 				}
+				case 'a': {
+					c = new Water({i1,i});
+					c->setTexture(this->TextureStorage->GetTexture("Water"));
+                    break;
+                }
 				default: {
                     continue;
                 }
