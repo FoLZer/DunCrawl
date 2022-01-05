@@ -46,12 +46,12 @@ void TWorld::PopulateStartArea() {
 			switch(map[i][i1]) {
 				case 'w': {
 					c = new Wall({i1,i});
-					c->setTexture(this->TextureStorage->GetTexture("Wall"));
+					c->setTexture(this->TextureStorage->GetTexture("StoneWall"));
 					break;
 				}
 				case 'f': {
 					c = new Floor({i1,i});
-					c->setTexture(this->TextureStorage->GetTexture("Wood"));
+					c->setTexture(this->TextureStorage->GetTexture("StoneFloor"));
 					break;
 				}
 				case 'a': {
@@ -76,9 +76,10 @@ void TWorld::InitializeWorld(const int _width, const int _height) {
 }
 
 void TWorld::DrawFrame(TDrawingScreen* Screen) {
-    Screen->Clear();
 	Cell* centerCell = this->player->getLoc();
 	Coords centerLoc = centerCell->getLoc();
+	Screen->Clear();
+	Screen->DrawTextureRepeat({{centerLoc.x*4,centerLoc.y*4},{Screen->getWidth(),Screen->getHeight()}},this->TextureStorage->GetTexture("Background"));
 	for(int x=0;x<this->width;x++) {
 		for(int y=0;y<this->height;y++) {
 			Cell* c = this->getCellByLoc(x,y);

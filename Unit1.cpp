@@ -44,16 +44,18 @@ void __fastcall TMainForm::FormCreate(TObject *Sender)
 
 void TMainForm::InitializeTextures() {
 	//Define textures here
-	this->World->TextureStorage->DefineTexture("Wood", "textures/Wood.bmp");
-	this->World->TextureStorage->DefineTexture("Wall", "textures/Wall.bmp");
+	this->World->TextureStorage->DefineTexture("StoneWall", "textures/StoneWall.bmp");
+	this->World->TextureStorage->DefineTexture("StoneFloor", "textures/StoneFloor.bmp");
 	this->World->TextureStorage->DefineTexture("Water", "textures/Water.bmp");
+	this->World->TextureStorage->DefineTexture("Background", "textures/Back.bmp");
 }
 
 void TMainForm::LoadTextures() {
-    //Load textures here
-	this->World->TextureStorage->LoadTexture("Wood");
-	this->World->TextureStorage->LoadTexture("Wall");
+	//Load textures here
+	this->World->TextureStorage->LoadTexture("StoneWall");
+	this->World->TextureStorage->LoadTexture("StoneFloor");
 	this->World->TextureStorage->LoadTexture("Water");
+	this->World->TextureStorage->LoadTexture("Background");
 }
 
 void TMainForm::InitializeWorld() {
