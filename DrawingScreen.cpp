@@ -48,3 +48,35 @@ void TDrawingScreen::DrawRect(const Vector2 vec, const TColor colBounds, const T
 void TDrawingScreen::Draw() {
 	this->_image->Canvas->Draw(0,0,this->_imageBuf);
 }
+
+void TDrawingScreen::DrawTexture(const Vector2 bounds, TTexture* texture) {
+	Graphics::TBitmap* bitmap = texture->getBitmap();
+	this->_imageBuf->Canvas->StretchDraw({bounds.from.x,bounds.from.y,bounds.to.x,bounds.to.y}, bitmap);
+}
+
+void TDrawingScreen::DrawTextureRepeat(const Vector2 bounds, TTexture* texture) {
+	Graphics::TBitmap* bitmap = texture->getBitmap();
+	int r_x = -bitmap->Width + (bounds.from.x % bitmap->Width);  //magic i guess
+	int r_y = -bitmap->Width + (bounds.from.y % bitmap->Height);
+	int x = 0;
+	do {
+		int y = 0;
+		do {
+			this->_imageBuf->Canvas->Draw(x*bitmap->Width + r_x, y*bitmap->Height + r_y, bitmap);
+			y++;
+		} while((y*bitmap->Height + r_y)<bounds.to.y);
+        x++;
+	} while((x*bitmap->Width+r_x)<bounds.to.x);
+}
+
+int TDrawingScreen::getWidth() {
+	return this->_imageBuf->Width;
+}
+
+int TDrawingScreen::getHeight() {
+    return this->_imageBuf->Height;
+}
+
+void TDrawingScreen::Clear() {
+    this->DrawRect({{0,0},{this->_imageBuf->Width,this->_imageBuf->Height}},clWhite,clWhite);
+}

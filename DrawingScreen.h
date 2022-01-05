@@ -1,3 +1,5 @@
+#pragma once
+
 //---------------------------------------------------------------------------
 
 #ifndef DrawingScreenH
@@ -9,6 +11,8 @@
 #include <vcl.h>
 #include "Utils.h"
 
+#include "Texture.h"
+
 class TDrawingScreen
 {
 private:
@@ -19,7 +23,12 @@ private:
 public:
 	TDrawingScreen(TImage* image);
 	~TDrawingScreen();
+	int getWidth();
+    int getHeight();
 	void Draw();
 	void DrawLine(const Vector2 vec, const TColor col);
 	void DrawRect(const Vector2 vec, const TColor colBounds, const TColor colIn);
+	void DrawTexture(const Vector2 bounds, TTexture* texture);
+	void DrawTextureRepeat(const Vector2 bounds, TTexture* texture);
+    void Clear();
 };

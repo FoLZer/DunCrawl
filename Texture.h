@@ -1,3 +1,5 @@
+#pragma once
+
 //---------------------------------------------------------------------------
 
 #ifndef TextureH
@@ -18,5 +20,6 @@ public:
     ~TTexture();
 	void Load();
 	void Unload();
-    bool isLoaded();
+	bool isLoaded();
+	Graphics::TBitmap* getBitmap();
 };

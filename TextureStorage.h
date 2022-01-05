@@ -21,4 +21,5 @@ public:
 	void UnloadTexture(const String name);
 	void LoadAllTextures();
 	void UnloadAllTextures();
+	TTexture* GetTexture(const String name);
 };

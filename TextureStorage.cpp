@@ -53,3 +53,7 @@ void TTextureStorage::UnloadAllTextures() {
 		it->second->Unload();
 	}
 }
+
+TTexture* TTextureStorage::GetTexture(const String name) {
+    return this->textures.at(name);
+}

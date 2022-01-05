@@ -16,6 +16,7 @@ object MainForm: TMainForm
   Menu = MainMenu1
   OldCreateOrder = False
   OnCreate = FormCreate
+  OnKeyPress = FormKeyPress
   PixelsPerInch = 96
   TextHeight = 13
   object Screen: TImage
