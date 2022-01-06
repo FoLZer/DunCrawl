@@ -37,5 +37,7 @@ public:
 	Cell* getCellByLoc(const int x, const int y);
 	void DrawFrame(TDrawingScreen* Screen);
 	void SetupPlayer();
-    void MovePlayer(int r_x, int r_y);
+	void MovePlayer(int r_x, int r_y);
+	int get_size_x();
+    int get_size_y();
 };
