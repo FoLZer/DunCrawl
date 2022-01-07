@@ -22,6 +22,8 @@ class TWorld {
 private:
 	int width;
 	int height;
+	int coord_x_player;
+	int coord_y_player;
 	std::vector<Cell*> _world;
     std::vector<CellObject*> objects;
     Player* player;
@@ -36,6 +38,8 @@ public:
 	Cell* getCellByLoc(Coords loc);
 	Cell* getCellByLoc(const int x, const int y);
 	void DrawFrame(TDrawingScreen* Screen);
-	void SetupPlayer();
-    void MovePlayer(int r_x, int r_y);
+	void SetupPlayer(int x,int y);
+	void MovePlayer(int r_x, int r_y);
+	int get_size_x();
+    int get_size_y();
 };

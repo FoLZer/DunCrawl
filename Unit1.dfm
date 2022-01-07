@@ -30,6 +30,56 @@ object MainForm: TMainForm
     Top = 568
     object File1: TMenuItem
       Caption = 'File'
+      object N1: TMenuItem
+        Caption = 'New game'
+        OnClick = FormCreate
+      end
+      object Saveprogress1: TMenuItem
+        Caption = 'Save progress'
+      end
+      object Downloadprogress1: TMenuItem
+        Caption = 'Download progress'
+      end
+      object Downloadprogress2: TMenuItem
+        Caption = 'Leaderbords'
+      end
+      object Exit1: TMenuItem
+        Caption = 'Exit'
+        OnClick = Exit1Click
+      end
+    end
+    object Settings1: TMenuItem
+      Caption = 'Settings'
+      object LandSize1: TMenuItem
+        Caption = 'LandSize'
+        object N150x1501: TMenuItem
+          Caption = '150 x 150'
+          RadioItem = True
+          OnClick = N150x1501Click
+        end
+        object N200x2001: TMenuItem
+          Caption = '200 x 200'
+          RadioItem = True
+          OnClick = N200x2001Click
+        end
+        object N300x3001: TMenuItem
+          Caption = '300 x 300'
+          RadioItem = True
+          OnClick = N300x3001Click
+        end
+      end
+      object PoVskin1: TMenuItem
+        Caption = 'PoV skin'
+        object Rogue1: TMenuItem
+          Caption = 'Elf'
+        end
+        object Rogue2: TMenuItem
+          Caption = 'Mario'
+        end
+        object Knight1: TMenuItem
+          Caption = 'Knight'
+        end
+      end
     end
   end
 end
