@@ -133,8 +133,8 @@ void TWorld::DrawFrame(TDrawingScreen* Screen) {
 		}
 	}
 }
-void TWorld::SetupPlayer() {
-	Floor* floor = static_cast<Floor*>(this->getCellByLoc(coord_x_player,coord_y_player));
+void TWorld::SetupPlayer(Coords coords) {
+	Floor* floor = static_cast<Floor*>(this->getCellByLoc(coords.x,coords.y));
 	this->player = this->createObject<Player>(floor);
 }
 template<class T> T* TWorld::createObject(Cell* loc) {
