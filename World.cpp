@@ -117,8 +117,8 @@ void TWorld::DrawFrame(TDrawingScreen* Screen) {
 	Coords centerLoc = centerCell->getLoc();
 	Screen->Clear();
 	Screen->DrawTextureRepeat({{centerLoc.x*4,centerLoc.y*4},{Screen->getWidth(),Screen->getHeight()}},this->TextureStorage->GetTexture("Background"));
-	for(int x=0;x<this->width;x++) {
-		for(int y=0;y<this->height;y++) {
+	for(int x=std::max(centerLoc.x-7,0);x<std::min(centerLoc.x+7,this->width);x++) {
+		for(int y=std::max(centerLoc.y-7,0);y<std::min(centerLoc.y+7,this->height);y++) {
 			Cell* c = this->getCellByLoc(x,y);
 			if(c == NULL) {
 				continue;
