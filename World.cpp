@@ -9,14 +9,10 @@
 #include <stdlib.h>
 #include <ctime>
 
+#define CHUNK_SIZE 64
+
 TWorld::TWorld() {
 	this->TextureStorage = new TTextureStorage();
-}
-int TWorld::get_size_x(){
-   	return 140;
-}
-int TWorld::get_size_y(){
-	return 140;
 }
 TWorld::~TWorld() {
 	for(Cell* c : this->_world) {
@@ -34,19 +30,19 @@ int TWorld::LocToArI(const int x, const int y) {
 	return x * this->width + y;
 }
 Coords TWorld::PopulateStartArea() {
-	int amount_=17, size_=2,  x=0, y=0;
-	std::vector < std::vector<char> > map_;
-	int seed=time(NULL);
+	int amount_=17, size_=2;
+	std::vector<std::vector<char>> map_;
+	int seed = time(NULL);
 	map_.resize(n);
-	srand(seed+x*1.25+y*0.8);
-	for(int i=0; i<n; i++) {
-		map_[i].resize(m,'w');
+	srand(seed);
+	for(int i=0; i<CHUNK_SIZE; i++) {
+		map_[i].resize(CHUNK_SIZE,'w');
 		srand(rand());
-		for(int j=0; j<m; j++) {
+		for(int j=0; j<CHUNK_SIZE; j++) {
 			int probability1=0;
 
-			if(i<8||i>n-9||j<8||j>m-9) {
-				if((rand()%10!=2)&&(i==7||i==n-9)&&(j==7||j==m-9)) {
+			if(i<8||i>CHUNK_SIZE-9||j<8||j>CHUNK_SIZE-9) {
+				if((rand()%10!=2)&&(i==7||i==CHUNK_SIZE-9)&&(j==7||j==CHUNK_SIZE-9)) {
 					map_[i][j]='f';
 				} else {
 					map_[i][j]='w';
@@ -54,17 +50,17 @@ Coords TWorld::PopulateStartArea() {
 			} else {
 				probability1+=amount_;
 				if(j>2&&i>2) {
-                    			int b=(map_[i-1][j-1]==map_[i][j-1])+(map_[i-1][j-1]==map_[i-2][j-1])+(map_[i-1][j-1]==map_[i-1][j-2])+(map_[i-1][j-1]==map_[i-1][j]);
+					int b=(map_[i-1][j-1]==map_[i][j-1])+(map_[i-1][j-1]==map_[i-2][j-1])+(map_[i-1][j-1]==map_[i-1][j-2])+(map_[i-1][j-1]==map_[i-1][j]);
 					if(b<2) {
 						if(map_[i-1][j-1]=='f') {
-                            				map_[i-1][j-1]='w';
+							map_[i-1][j-1]='w';
 						} else {
-                            				map_[i-1][j-1]='f';
+							map_[i-1][j-1]='f';
 						}
 					}
 				}
 				probability1+=((map_[i-1][j]=='f')+(map_[i][j-1]=='f')+(map_[i-1][j+1]=='f'))*(19+size_*1.4);
-                		if(rand()%101<probability1) {
+				if(rand()%101<probability1) {
 					map_[i][j]='w';
 				} else {
 					map_[i][j]='f';
@@ -72,8 +68,8 @@ Coords TWorld::PopulateStartArea() {
 			}
 		}
 	}
-    	for(int i=1; i<n-1; i++) {
-		for(int j=1; j<m-1; j++) {
+	for(int i=1; i<CHUNK_SIZE-1; i++) {
+		for(int j=1; j<CHUNK_SIZE-1; j++) {
 			if(map_[i][j]=='w'&&((map_[i][j+1]=='f'&&map_[i][j-1]=='f')||(map_[i+1][j]=='f'&&map_[i-1][j]=='f'))) {
 				map_[i][j]='a';
 			}
@@ -161,6 +157,6 @@ void TWorld::MovePlayer(int r_x, int r_y) {
 	c = this->getCellByLoc(new_x, new_y);
 	if(c == NULL) {
 		return;
-    }
+	}
 	this->player->MoveTo(c);
 }

@@ -36,12 +36,18 @@ __published:	// IDE-managed Components
 	TMenuItem *Knight1;
 	void __fastcall FormCreate(TObject *Sender);
 	void __fastcall FormKeyPress(TObject *Sender, System::WideChar &Key);
+	void __fastcall N150x1501Click(TObject *Sender);
+	void __fastcall N200x2001Click(TObject *Sender);
+	void __fastcall N300x3001Click(TObject *Sender);
+	void __fastcall Exit1Click(TObject *Sender);
 private:	// User declarations
 	TDrawingScreen *DrawScreen;
-    TWorld *World;
+	TWorld *World;
 	void InitializeTextures();
 	void LoadTextures();
-    void InitializeWorld();
+	void InitializeWorld();
+	void DrawFrame();
+	void CreateWorld(int size);
 public:		// User declarations
 	__fastcall TMainForm(TComponent* Owner);
 };
