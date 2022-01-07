@@ -11,6 +11,8 @@
 
 const int CHUNK_SIZE = 64;
 
+const int CELL_SIZE = 50;
+
 TWorld::TWorld() {
 	this->TextureStorage = new TTextureStorage();
 }
@@ -123,17 +125,25 @@ void TWorld::DrawFrame(TDrawingScreen* Screen) {
 			if(c == NULL) {
 				continue;
 			}
-			c->DoRender(Screen,50*(x-centerLoc.x)+Screen->getWidth()/2-25,50*(y-centerLoc.y)+Screen->getHeight()/2-25,50,50);
+			c->DoRender(Screen,CELL_SIZE*(x-centerLoc.x)+Screen->getWidth()/2-(CELL_SIZE/2),CELL_SIZE*(y-centerLoc.y)+Screen->getHeight()/2-(CELL_SIZE/2),CELL_SIZE,CELL_SIZE);
 		}
 	}
+	for(int i = 0; i < this->objects.capacity(); i++) {
+		CellObject* obj = this->objects[i];
+		Coords loc = obj->getLoc()->getLoc();
+		if(std::abs(loc.x - centerLoc.x) < 8 && std::abs(loc.y - centerLoc.y) < 8) {
+			obj->DoRender(Screen,CELL_SIZE*(loc.x-centerLoc.x)+Screen->getWidth()/2-(CELL_SIZE/2),CELL_SIZE*(loc.y-centerLoc.y)+Screen->getHeight()/2-(CELL_SIZE/2),CELL_SIZE,CELL_SIZE);
+		}
+    }
 }
 void TWorld::SetupPlayer(Coords coords) {
 	Floor* floor = static_cast<Floor*>(this->getCellByLoc(coords.x,coords.y));
 	this->player = this->createObject<Player>(floor);
+	this->player->setTexture(this->TextureStorage->GetTexture("Knight_skin"));
 }
 template<class T> T* TWorld::createObject(Cell* loc) {
 	T* obj = new T(loc);
-	int n = this->objects.size();
+	int n = this->objects.capacity();
 	this->objects.reserve(n+1);
 	this->objects[n] = obj;
 	return obj;

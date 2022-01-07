@@ -17,12 +17,15 @@ TTextureStorage::~TTextureStorage() {
 	}
 }
 
-void TTextureStorage::DefineTexture(const String name, const String path) {
+void TTextureStorage::DefineTexture(const String name, const String path, const bool isTransparent) {
 	if(this->textures.find(name) != this->textures.end()) {
 		throw "Tried to define texture with the same name without undefining!";
 	}
-	TTexture* texture = new TTexture(path);
+	TTexture* texture = new TTexture(path, isTransparent);
 	this->textures.insert({name, texture});
+}
+void TTextureStorage::DefineTexture(const String name, const String path) {
+	this->DefineTexture(name,path,false);
 }
 
 void TTextureStorage::UndefineTexture(const String name) {

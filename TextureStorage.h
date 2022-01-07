@@ -15,8 +15,9 @@ private:
 public:
 	TTextureStorage();
     ~TTextureStorage();
+	void DefineTexture(const String name, const String path, const bool isTransparent);
 	void DefineTexture(const String name, const String path);
-    void UndefineTexture(const String name);
+	void UndefineTexture(const String name);
 	void LoadTexture(const String name);
 	void UnloadTexture(const String name);
 	void LoadAllTextures();
