@@ -26,24 +26,24 @@ void __fastcall TMainForm::FormCreate(TObject *Sender)
 	this->InitializeWorld();
 	this->InitializeTextures();
 	this->LoadTextures();
-  this->CreateWorld(64);
-  this->DrawFrame();
+	this->CreateWorld(64);
+	this->DrawFrame();
 }
 //---------------------------------------------------------------------------
 
 void TMainForm::DrawFrame() {
-  this->World->DrawFrame(this->DrawScreen);
-  this->DrawScreen->DrawLine({{Screen->Width/2,0},{Screen->Width/2,Screen->Height}},clBlack);
+	this->World->DrawFrame(this->DrawScreen);
+	this->DrawScreen->DrawLine({{Screen->Width/2,0},{Screen->Width/2,Screen->Height}},clBlack);
 	this->DrawScreen->DrawLine({{0,Screen->Height/2},{Screen->Width,Screen->Height/2}},clBlack);
 
 	this->DrawScreen->Draw();
 }
 
 void TMainForm::CreateWorld(int size) {
-  this->World->InitializeWorld(size,size);
+	this->World->InitializeWorld(size,size);
 	Coords c = this->World->PopulateStartArea();
 	this->World->SetupPlayer(c);
-  this->DrawFrame();
+	this->DrawFrame();
 }
 
 void TMainForm::InitializeTextures() {
@@ -63,7 +63,7 @@ void TMainForm::LoadTextures() {
 }
 
 void TMainForm::InitializeWorld() {
-  this->World = new TWorld();
+	this->World = new TWorld();
 }
 
 void __fastcall TMainForm::FormKeyPress(TObject *Sender, System::WideChar &Key)
@@ -87,12 +87,12 @@ void __fastcall TMainForm::FormKeyPress(TObject *Sender, System::WideChar &Key)
 		}
 		case KEY_RIGHT: {
 			this->World->MovePlayer(1,0);
-      redraw = true;
+			redraw = true;
 			break;
-    }
+		}
 	}
 	if(redraw) {
-    this->World->DrawFrame(this->DrawScreen);
+		this->World->DrawFrame(this->DrawScreen);
 		this->DrawScreen->DrawLine({{Screen->Width/2,0},{Screen->Width/2,Screen->Height}},clBlack);
 		this->DrawScreen->DrawLine({{0,Screen->Height/2},{Screen->Width,Screen->Height/2}},clBlack);
 		this->DrawScreen->Draw();
@@ -102,24 +102,24 @@ void __fastcall TMainForm::FormKeyPress(TObject *Sender, System::WideChar &Key)
 
 void __fastcall TMainForm::N150x1501Click(TObject *Sender)
 {
-  this->CreateWorld(150);
+	this->CreateWorld(150);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TMainForm::N200x2001Click(TObject *Sender)
 {
-  this->CreateWorld(200);
+	this->CreateWorld(200);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TMainForm::N300x3001Click(TObject *Sender)
 {
-  this->CreateWorld(300);
+	this->CreateWorld(300);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TMainForm::Exit1Click(TObject *Sender)
 {
-  Close();
+	Close();
 }
 //---------------------------------------------------------------------------
