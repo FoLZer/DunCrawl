@@ -31,8 +31,8 @@ public:
 	TWorld();
 	~TWorld();
 	TTextureStorage *TextureStorage;
-	Coords InitializeWorld(const int width, const int height);
-	void PopulateStartArea();
+	void InitializeWorld(const int width, const int height);
+	Coords PopulateStartArea();
 	Cell* getCellByLoc(Coords loc);
 	Cell* getCellByLoc(const int x, const int y);
 	void DrawFrame(TDrawingScreen* Screen);
