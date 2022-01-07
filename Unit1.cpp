@@ -30,11 +30,11 @@ void __fastcall TMainForm::FormCreate(TObject *Sender)
 	this->InitializeWorld();
 	this->InitializeTextures();
 	this->LoadTextures();
-	this->World->InitializeWorld(this->World->get_size_x(),this->World->get_size_y());
+	this->World->InitializeWorld();
 	this->World->PopulateStartArea();
 	this->World->SetupPlayer();
 	this->World->DrawFrame(this->DrawScreen);
-    this->DrawScreen->DrawLine({{Screen->Width/2,0},{Screen->Width/2,Screen->Height}},clBlack);
+    	this->DrawScreen->DrawLine({{Screen->Width/2,0},{Screen->Width/2,Screen->Height}},clBlack);
 	this->DrawScreen->DrawLine({{0,Screen->Height/2},{Screen->Width,Screen->Height/2}},clBlack);
 
 	this->DrawScreen->Draw();
