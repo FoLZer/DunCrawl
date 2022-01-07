@@ -4,13 +4,12 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #include <cmath>
-#include <vector>
 #include <queue>
 #include <algorithm>
 #include <stdlib.h>
 #include <ctime>
 
-int CHUNK_SIZE = 150;
+int CHUNK_SIZE = 100;
 
 const int CELL_SIZE = 50;
 
@@ -32,6 +31,7 @@ Cell* TWorld::getCellByLoc(const int x, const int y) {
 int TWorld::LocToArI(const int x, const int y) {
 	return x * this->width + y;
 }
+
 Coords TWorld::PopulateStartArea() {
 	int amount_=17, size_=2;
 	char map_[CHUNK_SIZE][CHUNK_SIZE];
@@ -71,10 +71,10 @@ Coords TWorld::PopulateStartArea() {
 	}
 	for(int i=3; i<CHUNK_SIZE-4; i++) {
 		for(int j=3; j<CHUNK_SIZE-4; j++) {
-			//if(map_[i][j]=='w'&&((map_[i][j+1]=='f'&&map_[i][j-1]=='f')||(map_[i+1][j]=='f'&&map_[i-1][j]=='f'))) {
-				///map_[i][j]='a';
-			//}
-            if((map_[i][j]!='w')&&(map_[i][j-1]=='w')&&(map_[i][j+1]=='w')&&(map_[i+1][j]=='w')&&(map_[i-1][j]=='w'))
+			if(map_[i][j]=='w'&&((map_[i][j+1]=='f'&&map_[i][j-1]=='f')||(map_[i+1][j]=='f'&&map_[i-1][j]=='f'))) {
+				//map_[i][j]='a';
+			}
+			if((map_[i][j]!='w')&&(map_[i][j-1]=='w')&&(map_[i][j+1]=='w')&&(map_[i+1][j]=='w')&&(map_[i-1][j]=='w'))
 			   {map_[i][j]='w';}
 		}
 	}
@@ -90,22 +90,87 @@ Coords TWorld::PopulateStartArea() {
 			  map_reductor[i][j]=-1;
 			  break;
 			  }
-              default: {
+			  default: {
 					continue;
 				}
 		   }
 		}
 	}
-	//while()
-	//queue <coords> bfs;
+    std::queue <Coords> bfs;
+	Coords xy1,xy2;
+	xy1.x=CHUNK_SIZE/2;
+	xy1.y=CHUNK_SIZE/2;
+	bfs.push(xy1);
+	while(map_[xy1.x][xy1.y]!='f'){
+	  xy1=bfs.front();
+	  bfs.pop();
+	  xy2.x=xy1.x+1;
+	  xy2.y=xy1.y;
+	  bfs.push(xy2);
+	  xy2.x=xy1.x-1;
+	  xy2.y=xy1.y;
+	  bfs.push(xy2);
+	  xy2.x=xy1.x;
+	  xy2.y=xy1.y+1;
+	  bfs.push(xy2);
+	  xy2.x=xy1.x;
+	  xy2.y=xy1.y-1;
+	  bfs.push(xy2);
+	}
+	while(!bfs.empty())
+	bfs.pop();
+	bfs.push(xy1);
+	map_reductor[xy1.x][xy1.y]=-2;
+	Coords x2;
+	while(!bfs.empty()){
+	 x2.y=bfs.front().y;
+	 x2.x=bfs.front().x;
+	 bfs.pop();
+	 if(map_reductor[x2.x+1][x2.y]==-1)
+	   {
+		map_reductor[x2.x+1][x2.y]=-2;
+		xy1.x=x2.x+1;
+		xy1.y=x2.y;
+		bfs.push(xy1);
+	   }
+	 if(map_reductor[x2.x-1][x2.y]==-1)
+	   {
+		map_reductor[x2.x-1][x2.y]=-2;
+		xy1.x=x2.x-1;
+		xy1.y=x2.y;
+		bfs.push(xy1);
+	   }
+	 if(map_reductor[x2.x][x2.y+1]==-1)
+	   {
+	   	map_reductor[x2.x][x2.y+1]=-2;
+		xy1.x=x2.x;
+		xy1.y=x2.y+1;
+		bfs.push(xy1);
+	   }
+	 if(map_reductor[x2.x][x2.y-1]==-1)
+	   {
+		map_reductor[x2.x][x2.y-1]=-2;
+		xy1.x=x2.x;
+		xy1.y=x2.y-1;
+		bfs.push(xy1);
+	   }
+	}
+    for(int i = 4;i<CHUNK_SIZE-8;i++) {
+		for(int j = 4;j<CHUNK_SIZE-8;j++) {
+		  if(map_reductor[i][j]==-1)
+		  {
+			  continue;
+		  }
+		}
+	}
 	Coords coords;
 	for(int i = 0;i<CHUNK_SIZE;i++) {
 		for(int i1 = 0;i1<CHUNK_SIZE;i1++) {
 			Cell* c;
 			switch(map_[i][i1]) {
 				case 'b': {
-					c = new Bridge({i1,i});
-					c->setTexture(this->TextureStorage->GetTexture("Bridge"));
+					//c = new Bridge({i1,i});
+					//c->setTexture(this->TextureStorage->GetTexture("Bridge"));
                     if(i<CHUNK_SIZE/1.8&&i1<CHUNK_SIZE/1.8) {
 						coords.x = i1;
 						coords.y = i;

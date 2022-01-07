@@ -6,7 +6,7 @@
 //---------------------------------------------------------------------------
 #endif
 
-#include <vector>
+#include <queue>
 
 #include "Cell.h"
 #include "Floor.h"

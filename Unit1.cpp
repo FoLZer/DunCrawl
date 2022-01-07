@@ -26,7 +26,7 @@ void __fastcall TMainForm::FormCreate(TObject *Sender)
 	this->InitializeWorld();
 	this->InitializeTextures();
 	this->LoadTextures();
-	this->CreateWorld(64);
+	this->CreateWorld(100);
 	this->DrawFrame();
 }
 //---------------------------------------------------------------------------
@@ -52,7 +52,7 @@ void TMainForm::InitializeTextures() {
 	this->World->TextureStorage->DefineTexture("StoneFloor", "textures/StoneFloor.bmp");
 	this->World->TextureStorage->DefineTexture("Water", "textures/Water.bmp");
 	this->World->TextureStorage->DefineTexture("Background", "textures/Back.bmp");
-	this->World->TextureStorage->DefineTexture("Bridge", "textures/Bridge.bmp");
+	//this->World->TextureStorage->DefineTexture("Bridge", "textures/Bridge.bmp");
 	this->World->TextureStorage->DefineTexture("Knight_skin", "textures/Knight_skin.bmp", true);
 }
 
@@ -62,7 +62,7 @@ void TMainForm::LoadTextures() {
 	this->World->TextureStorage->LoadTexture("StoneFloor");
 	this->World->TextureStorage->LoadTexture("Water");
 	this->World->TextureStorage->LoadTexture("Background");
-	this->World->TextureStorage->LoadTexture("Bridge");
+	//this->World->TextureStorage->LoadTexture("Bridge");
 	this->World->TextureStorage->LoadTexture("Knight_skin");
 }
 
