@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <ctime>
 
-#define CHUNK_SIZE 64
+const int CHUNK_SIZE = 64;
 
 TWorld::TWorld() {
 	this->TextureStorage = new TTextureStorage();
@@ -31,12 +31,10 @@ int TWorld::LocToArI(const int x, const int y) {
 }
 Coords TWorld::PopulateStartArea() {
 	int amount_=17, size_=2;
-	std::vector<std::vector<char>> map_;
+	char map_[CHUNK_SIZE][CHUNK_SIZE];
 	int seed = time(NULL);
-	map_.resize(CHUNK_SIZE);
 	srand(seed);
 	for(int i=0; i<CHUNK_SIZE; i++) {
-		map_[i].resize(CHUNK_SIZE,'w');
 		srand(rand());
 		for(int j=0; j<CHUNK_SIZE; j++) {
 			int probability1=0;
@@ -76,8 +74,8 @@ Coords TWorld::PopulateStartArea() {
 		}
 	}
 	Coords coords;
-	for(int i = 0;i<map_.size();i++) {
-		for(int i1 = 0;i1<map_[i].size();i1++) {
+	for(int i = 0;i<CHUNK_SIZE;i++) {
+		for(int i1 = 0;i1<CHUNK_SIZE;i1++) {
 			Cell* c;
 			switch(map_[i][i1]) {
 				case 'w': {
@@ -160,3 +158,4 @@ void TWorld::MovePlayer(int r_x, int r_y) {
 	}
 	this->player->MoveTo(c);
 }
+
