@@ -33,7 +33,7 @@ Coords TWorld::PopulateStartArea() {
 	int amount_=17, size_=2;
 	std::vector<std::vector<char>> map_;
 	int seed = time(NULL);
-	map_.resize(n);
+	map_.resize(CHUNK_SIZE);
 	srand(seed);
 	for(int i=0; i<CHUNK_SIZE; i++) {
 		map_[i].resize(CHUNK_SIZE,'w');
