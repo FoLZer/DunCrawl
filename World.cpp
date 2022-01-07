@@ -50,17 +50,17 @@ Coords TWorld::PopulateStartArea() {
 			} else {
 				probability1+=amount_;
 				if(j>2&&i>2) {
-          int b=(map_[i-1][j-1]==map_[i][j-1])+(map_[i-1][j-1]==map_[i-2][j-1])+(map_[i-1][j-1]==map_[i-1][j-2])+(map_[i-1][j-1]==map_[i-1][j]);
+					int b=(map_[i-1][j-1]==map_[i][j-1])+(map_[i-1][j-1]==map_[i-2][j-1])+(map_[i-1][j-1]==map_[i-1][j-2])+(map_[i-1][j-1]==map_[i-1][j]);
 					if(b<2) {
 						if(map_[i-1][j-1]=='f') {
-              map_[i-1][j-1]='w';
+							map_[i-1][j-1]='w';
 						} else {
-              map_[i-1][j-1]='f';
+							map_[i-1][j-1]='f';
 						}
 					}
 				}
 				probability1+=((map_[i-1][j]=='f')+(map_[i][j-1]=='f')+(map_[i-1][j+1]=='f'))*(19+size_*1.4);
-        if(rand()%101<probability1) {
+				if(rand()%101<probability1) {
 					map_[i][j]='w';
 				} else {
 					map_[i][j]='f';
@@ -68,7 +68,7 @@ Coords TWorld::PopulateStartArea() {
 			}
 		}
 	}
-  for(int i=1; i<CHUNK_SIZE-1; i++) {
+	for(int i=1; i<CHUNK_SIZE-1; i++) {
 		for(int j=1; j<CHUNK_SIZE-1; j++) {
 			if(map_[i][j]=='w'&&((map_[i][j+1]=='f'&&map_[i][j-1]=='f')||(map_[i+1][j]=='f'&&map_[i-1][j]=='f'))) {
 				map_[i][j]='a';
@@ -157,6 +157,6 @@ void TWorld::MovePlayer(int r_x, int r_y) {
 	c = this->getCellByLoc(new_x, new_y);
 	if(c == NULL) {
 		return;
-    }
+	}
 	this->player->MoveTo(c);
 }
