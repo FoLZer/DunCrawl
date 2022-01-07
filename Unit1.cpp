@@ -8,14 +8,10 @@
 #pragma package(smart_init)
 #pragma resource "*.dfm"
 
-#include <chrono>
-#include <thread>
-
 #define KEY_UP 'w'
 #define KEY_DOWN 's'
 #define KEY_LEFT 'a'
 #define KEY_RIGHT 'd'
-int size_f=150;
 //---------------------------------------------------------------------------
 TMainForm *MainForm;
 //---------------------------------------------------------------------------
@@ -30,17 +26,25 @@ void __fastcall TMainForm::FormCreate(TObject *Sender)
 	this->InitializeWorld();
 	this->InitializeTextures();
 	this->LoadTextures();
-	this->World->InitializeWorld(size_f+14,size_f+14);
-	this->World->PopulateStartArea();
-	this->World->SetupPlayer(size_f/2.1,size_f/2.1);
+	this->CreateWorld(100);
+	this->DrawFrame();
+}
+//---------------------------------------------------------------------------
+
+void TMainForm::DrawFrame() {
 	this->World->DrawFrame(this->DrawScreen);
 	this->DrawScreen->DrawLine({{Screen->Width/2,0},{Screen->Width/2,Screen->Height}},clBlack);
 	this->DrawScreen->DrawLine({{0,Screen->Height/2},{Screen->Width,Screen->Height/2}},clBlack);
 
 	this->DrawScreen->Draw();
-
 }
-//---------------------------------------------------------------------------
+
+void TMainForm::CreateWorld(int size) {
+	this->World->InitializeWorld(size,size);
+	Coords c = this->World->PopulateStartArea();
+	this->World->SetupPlayer(c);
+	this->DrawFrame();
+}
 
 void TMainForm::InitializeTextures() {
 	//Define textures here
@@ -48,6 +52,8 @@ void TMainForm::InitializeTextures() {
 	this->World->TextureStorage->DefineTexture("StoneFloor", "textures/StoneFloor.bmp");
 	this->World->TextureStorage->DefineTexture("Water", "textures/Water.bmp");
 	this->World->TextureStorage->DefineTexture("Background", "textures/Back.bmp");
+	this->World->TextureStorage->DefineTexture("Bridge", "textures/Bridge.bmp");
+	this->World->TextureStorage->DefineTexture("Knight_skin", "textures/Knight_skin.bmp", true);
 }
 
 void TMainForm::LoadTextures() {
@@ -56,10 +62,12 @@ void TMainForm::LoadTextures() {
 	this->World->TextureStorage->LoadTexture("StoneFloor");
 	this->World->TextureStorage->LoadTexture("Water");
 	this->World->TextureStorage->LoadTexture("Background");
+	this->World->TextureStorage->LoadTexture("Bridge");
+	this->World->TextureStorage->LoadTexture("Knight_skin");
 }
 
 void TMainForm::InitializeWorld() {
-    this->World = new TWorld();
+	this->World = new TWorld();
 }
 
 void __fastcall TMainForm::FormKeyPress(TObject *Sender, System::WideChar &Key)
@@ -83,12 +91,12 @@ void __fastcall TMainForm::FormKeyPress(TObject *Sender, System::WideChar &Key)
 		}
 		case KEY_RIGHT: {
 			this->World->MovePlayer(1,0);
-            redraw = true;
+			redraw = true;
 			break;
-        }
+		}
 	}
 	if(redraw) {
-        this->World->DrawFrame(this->DrawScreen);
+		this->World->DrawFrame(this->DrawScreen);
 		this->DrawScreen->DrawLine({{Screen->Width/2,0},{Screen->Width/2,Screen->Height}},clBlack);
 		this->DrawScreen->DrawLine({{0,Screen->Height/2},{Screen->Width,Screen->Height/2}},clBlack);
 		this->DrawScreen->Draw();
@@ -96,32 +104,26 @@ void __fastcall TMainForm::FormKeyPress(TObject *Sender, System::WideChar &Key)
 }
 //---------------------------------------------------------------------------
 
-
-
-
 void __fastcall TMainForm::N150x1501Click(TObject *Sender)
 {
-   size_f=150;
+	this->CreateWorld(150);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TMainForm::N200x2001Click(TObject *Sender)
 {
-   size_f=200;
+	this->CreateWorld(200);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TMainForm::N300x3001Click(TObject *Sender)
 {
-   size_f=300;
+	this->CreateWorld(300);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TMainForm::Exit1Click(TObject *Sender)
 {
-   Close();
+	Close();
 }
 //---------------------------------------------------------------------------
-
-
-

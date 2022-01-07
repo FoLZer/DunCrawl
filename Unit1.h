@@ -42,10 +42,12 @@ __published:	// IDE-managed Components
 	void __fastcall Exit1Click(TObject *Sender);
 private:	// User declarations
 	TDrawingScreen *DrawScreen;
-    TWorld *World;
+	TWorld *World;
 	void InitializeTextures();
 	void LoadTextures();
-    void InitializeWorld();
+	void InitializeWorld();
+	void DrawFrame();
+	void CreateWorld(int size);
 public:		// User declarations
 	__fastcall TMainForm(TComponent* Owner);
 };

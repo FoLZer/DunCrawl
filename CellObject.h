@@ -11,10 +11,14 @@
 #include "Utils.h"
 
 class CellObject {
+private:
+	TTexture* _texture;
 protected:
-    Cell* loc;
+	Cell* loc;
 public:
 	CellObject(Cell* _loc);
 	~CellObject();
-    Cell* getLoc();
+	Cell* getLoc();
+	void DoRender(TDrawingScreen* Screen,int x,int y,int width,int height);
+	void setTexture(TTexture* texture);
 };
