@@ -9,17 +9,14 @@
 #include <stdlib.h>
 #include <ctime>
 
-int coord_x_player, coord_y_player;
-int n=140, m=140;
-
 TWorld::TWorld() {
 	this->TextureStorage = new TTextureStorage();
 }
 int TWorld::get_size_x(){
-   return n;
+   	return 140;
 }
 int TWorld::get_size_y(){
-   return m;
+	return 140;
 }
 TWorld::~TWorld() {
 	for(Cell* c : this->_world) {
@@ -36,59 +33,53 @@ Cell* TWorld::getCellByLoc(const int x, const int y) {
 int TWorld::LocToArI(const int x, const int y) {
 	return x * this->width + y;
 }
-void TWorld::PopulateStartArea() {
+Coords TWorld::PopulateStartArea() {
 	int amount_=17, size_=2,  x=0, y=0;
 	std::vector < std::vector<char> > map_;
 	int seed=time(NULL);
 	map_.resize(n);
 	srand(seed+x*1.25+y*0.8);
-	for(int i=0; i<n; i++)
-	{
+	for(int i=0; i<n; i++) {
 		map_[i].resize(m,'w');
 		srand(rand());
-		for(int j=0; j<m; j++)
-		{
+		for(int j=0; j<m; j++) {
 			int probability1=0;
 
-			if(i<8||i>n-9||j<8||j>m-9)
-			{
-				if((rand()%10!=2)&&(i==7||i==n-9)&&(j==7||j==m-9))
-				map_[i][j]='f';
-				else
-				map_[i][j]='w';
-			}
-			else
-			{
+			if(i<8||i>n-9||j<8||j>m-9) {
+				if((rand()%10!=2)&&(i==7||i==n-9)&&(j==7||j==m-9)) {
+					map_[i][j]='f';
+				} else {
+					map_[i][j]='w';
+				}
+			} else {
 				probability1+=amount_;
-				if(j>2&&i>2)
-				{
-                    int b=(map_[i-1][j-1]==map_[i][j-1])+(map_[i-1][j-1]==map_[i-2][j-1])+(map_[i-1][j-1]==map_[i-1][j-2])+(map_[i-1][j-1]==map_[i-1][j]);
-					if(b<2)
-                    {
-						if(map_[i-1][j-1]=='f')
-                            map_[i-1][j-1]='w';
-						else
-                            map_[i-1][j-1]='f';
+				if(j>2&&i>2) {
+                    			int b=(map_[i-1][j-1]==map_[i][j-1])+(map_[i-1][j-1]==map_[i-2][j-1])+(map_[i-1][j-1]==map_[i-1][j-2])+(map_[i-1][j-1]==map_[i-1][j]);
+					if(b<2) {
+						if(map_[i-1][j-1]=='f') {
+                            				map_[i-1][j-1]='w';
+						} else {
+                            				map_[i-1][j-1]='f';
+						}
 					}
 				}
 				probability1+=((map_[i-1][j]=='f')+(map_[i][j-1]=='f')+(map_[i-1][j+1]=='f'))*(19+size_*1.4);
-                if(rand()%101<probability1)
+                		if(rand()%101<probability1) {
 					map_[i][j]='w';
-				else
+				} else {
 					map_[i][j]='f';
+				}
 			}
 		}
 	}
-    for(int i=1; i<n-1; i++)
-	{
-		for(int j=1; j<m-1; j++)
-		{
-			if(map_[i][j]=='w'&&((map_[i][j+1]=='f'&&map_[i][j-1]=='f')||(map_[i+1][j]=='f'&&map_[i-1][j]=='f')))
-			{
+    	for(int i=1; i<n-1; i++) {
+		for(int j=1; j<m-1; j++) {
+			if(map_[i][j]=='w'&&((map_[i][j+1]=='f'&&map_[i][j-1]=='f')||(map_[i+1][j]=='f'&&map_[i-1][j]=='f'))) {
 				map_[i][j]='a';
 			}
 		}
 	}
+	Coords coords;
 	for(int i = 0;i<map_.size();i++) {
 		for(int i1 = 0;i1<map_[i].size();i1++) {
 			Cell* c;
@@ -101,9 +92,10 @@ void TWorld::PopulateStartArea() {
 				case 'a': {
 					c = new Floor({i1,i});
 					c->setTexture(this->TextureStorage->GetTexture("StoneFloor"));
-					if(i<90&&i1<110){
-					coord_x_player=i1;
-					coord_y_player=i;}
+					if(i<90&&i1<110) {
+						coords.x = i1;
+						coords.y = i;
+					}
 					break;
 				}
 				case 'f': {
@@ -119,6 +111,7 @@ void TWorld::PopulateStartArea() {
 			this->_world[a] = c;
 		}
 	}
+	return coords;
 }
 void TWorld::InitializeWorld(const int _width, const int _height) {
 	this->width = _width;
