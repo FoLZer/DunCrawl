@@ -4,7 +4,6 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #include <cmath>
-#include <queue>
 #include <algorithm>
 #include <stdlib.h>
 #include <ctime>
