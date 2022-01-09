@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <ctime>
 
-int CHUNK_SIZE = 150;
+int CHUNK_SIZE = 64;
 
 const int CELL_SIZE = 50;
 const int x_bfs[]{-1,1,0,0};
@@ -451,8 +451,8 @@ void TWorld::DrawFrame(TDrawingScreen* Screen) {
 	Coords centerLoc = centerCell->getLoc();
 	Screen->Clear();
 	Screen->DrawTextureRepeat({{centerLoc.x*4,centerLoc.y*4},{Screen->getWidth(),Screen->getHeight()}},this->TextureStorage->GetTexture("Background"));
-	for(int x=std::max(centerLoc.x-7,0);x<=std::min(centerLoc.x+7,this->width-1);x++) {
-		for(int y=std::max(centerLoc.y-7,0);y<=std::min(centerLoc.y+7,this->height-1);y++) {
+	for(int x=std::max(centerLoc.x-7,0);x<std::min(centerLoc.x+7,this->width);x++) {
+		for(int y=std::max(centerLoc.y-7,0);y<std::min(centerLoc.y+7,this->height);y++) {
 			Cell* c = this->getCellByLoc(x,y);
 			if(c == NULL) {
 				continue;
