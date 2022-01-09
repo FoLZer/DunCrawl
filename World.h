@@ -6,12 +6,13 @@
 //---------------------------------------------------------------------------
 #endif
 
-#include <vector>
+#include <queue>
 
 #include "Cell.h"
 #include "Floor.h"
 #include "Water.h"
 #include "Wall.h"
+#include "Bridge.h"
 
 #include "Utils.h"
 #include "TextureStorage.h"
