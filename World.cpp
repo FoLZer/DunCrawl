@@ -65,7 +65,7 @@ Coords TWorld::PopulateStartArea() {
 						}
 					}
 				}
-                int a = 0
+                int a = 0;
                 a += map_[i - 1][j] == 'f';
                 a += map_[i][j - 1] == 'f';
                 a += map_[i - 1][j + 1] == 'f';
@@ -231,8 +231,11 @@ Coords TWorld::PopulateStartArea() {
                                 x_add = x_bfs[i];
                                 y_add = y_bfs[i];
                             } else {
-                                switch(map_reductor[xy1.x + x_bfs[i]][xy1.y + y_bfs[i]]) {
-                                    case 0,-1,-2,-3: {
+								switch(map_reductor[xy1.x + x_bfs[i]][xy1.y + y_bfs[i]]) {
+									case 0:
+									case -1:
+									case -2:
+									case -3: {
                                         break;
                                     }
                                     default: {
@@ -263,8 +266,11 @@ Coords TWorld::PopulateStartArea() {
                                         closer_walls.push(xy2);
                                         map_reductor[xy1.x + x_bfs[i]][xy1.y + y_bfs[i]] = map_reductor[xy1.x][xy1.y] + 1;
                                         break;
-                                    }
-                                    case -1,-2,-3,0: {
+									}
+									case 0:
+									case -1:
+									case -2:
+									case -3: {
                                         break;
                                     }
                                     default: {
@@ -287,8 +293,10 @@ Coords TWorld::PopulateStartArea() {
                                 case 0: {
                                     map_reductor[i][j]=Flag;
                                     break;
-                                }
-                                case -1,-2,-9: {
+								}
+								case -1:
+								case -2:
+                                case -9: {
                                     break;
                                 }
                                 case -3: {
