@@ -4,8 +4,8 @@ object MainForm: TMainForm
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'DunCrawl'
-  ClientHeight = 598
-  ClientWidth = 598
+  ClientHeight = 600
+  ClientWidth = 600
   Color = clBtnFace
   DoubleBuffered = True
   Font.Charset = DEFAULT_CHARSET
@@ -22,7 +22,7 @@ object MainForm: TMainForm
   object Screen: TImage
     Left = 0
     Top = 0
-    Width = 601
+    Width = 600
     Height = 600
   end
   object MainMenu1: TMainMenu
