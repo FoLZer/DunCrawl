@@ -34,360 +34,276 @@ int TWorld::LocToArI(const int x, const int y) {
 }
 
 Coords TWorld::PopulateStartArea() {
-	int amount_=17, size_=2;
+	int amount_ = 17, size_ = 2;
 	char map_[CHUNK_SIZE][CHUNK_SIZE];
 	int seed = time(NULL);
 	srand(seed);
-	for(int i=0; i<CHUNK_SIZE; i++) {
+	for(int i=0; i < CHUNK_SIZE; i++) {
 		srand(rand());
-		for(int j=0; j<CHUNK_SIZE; j++) {
-			int probability1=0;
+		for(int j=0; j < CHUNK_SIZE; j++) {
+			int probability1 = 0;
 
-			if(i<8||i>CHUNK_SIZE-9||j<8||j>CHUNK_SIZE-9) {
-				if((rand()%10!=2)&&(i==7||i==CHUNK_SIZE-9)&&(j==7||j==CHUNK_SIZE-9)) {
-					map_[i][j]='f';
+			if(i < 8 || i > CHUNK_SIZE - 9 || j < 8 || j > CHUNK_SIZE - 9) {
+				if((rand() % 10 != 2) && (i == 7 || i == CHUNK_SIZE - 9) && (j == 7 || j == CHUNK_SIZE - 9)) {
+					map_[i][j] = 'f';
 				} else {
-					map_[i][j]='w';
+					map_[i][j] = 'w';
 				}
 			} else {
-				probability1+=amount_;
-				if(j>2&&i>2) {
-					int b=(map_[i-1][j-1]==map_[i][j-1])+(map_[i-1][j-1]==map_[i-2][j-1])+(map_[i-1][j-1]==map_[i-1][j-2])+(map_[i-1][j-1]==map_[i-1][j]);
-					if(b<2) {
-						if(map_[i-1][j-1]=='f') {
-							map_[i-1][j-1]='w';
+				probability1 += amount_;
+				if(j > 2 && i > 2) {
+                    int b = 0;
+                    b += map_[i - 1][j - 1] == map_[i][j - 1];
+                    b += map_[i - 1][j - 1] == map_[i - 2][j - 1];
+                    b += map_[i - 1][j - 1] == map_[i - 1][j - 2];
+                    b += map_[i - 1][j - 1] == map_[i - 1][j];
+					if(b < 2) {
+						if(map_[i - 1][j - 1] == 'f') {
+							map_[i - 1][j - 1] = 'w';
 						} else {
-							map_[i-1][j-1]='f';
+							map_[i - 1][j - 1] = 'f';
 						}
 					}
 				}
-				probability1+=((map_[i-1][j]=='f')+(map_[i][j-1]=='f')+(map_[i-1][j+1]=='f'))*(19+size_*1.4);
-				if(rand()%101<probability1) {
-					map_[i][j]='w';
+                int a = 0
+                a += map_[i - 1][j] == 'f';
+                a += map_[i][j - 1] == 'f';
+                a += map_[i - 1][j + 1] == 'f';
+				probability1 += a * (19 + size_ * 1.4);
+				if(rand() % 101 < probability1) {
+					map_[i][j] = 'w';
 				} else {
-					map_[i][j]='f';
+					map_[i][j] = 'f';
 				}
 			}
 		}
 	}
 	int map_reductor[CHUNK_SIZE][CHUNK_SIZE];
-    for(int i=0; i<CHUNK_SIZE-1; i++)
-    {
-        for(int j=0; j<CHUNK_SIZE-1; j++)
-        {
-            switch(map_[i][j])
-            {
-            case 'w':
-            {
-                map_reductor[i][j]=-9;
-                break;
-            }
-            case 'a':
-            {
-                map_reductor[i][j]=-9;
-                break;
-            }
-            case 'f':
-            {
-                map_reductor[i][j]=-1;
-                break;
-            }
-            default:
-            {
-                break;
-            }
+    for(int i=0; i < CHUNK_SIZE - 1; i++) {
+        for(int j=0; j < CHUNK_SIZE - 1; j++) {
+            switch(map_[i][j]) {
+                case 'w': {
+                    map_reductor[i][j] = -9;
+                    break;
+                }
+                case 'a': {
+                    map_reductor[i][j] = -9;
+                    break;
+                }
+                case 'f': {
+                    map_reductor[i][j] = -1;
+                    break;
+                }
+                default: {
+                    break;
+                }
             }
         }
     }
     std::queue <Coords> bfs;
     Coords xy1,xy2;
-    xy1.x=CHUNK_SIZE/2;
-    xy1.y=CHUNK_SIZE/2;
+    xy1.x = CHUNK_SIZE / 2;
+    xy1.y = CHUNK_SIZE / 2;
     bfs.push(xy1);
-    while(map_reductor[xy1.x][xy1.y]!=-1)
-    {
-        xy1=bfs.front();
-        for(int i=0; i<4; i++)
-        {
-            xy2.x=xy1.x+x_bfs[i];
-            xy2.y=xy1.y+y_bfs[i];
+    while(map_reductor[xy1.x][xy1.y] != -1) {
+        xy1 = bfs.front();
+        for(int i=0; i<4; i++) {
+            xy2.x = xy1.x + x_bfs[i];
+            xy2.y = xy1.y + y_bfs[i];
             bfs.push(xy2);
         }
 		bfs.pop();
     }
-    while(!bfs.empty())
+    while(!bfs.empty()) {
         bfs.pop();
+    }
     bfs.push(xy1);
-    map_reductor[xy1.x][xy1.y]=-2;
-    while(!bfs.empty())
-    {
-        xy2.y=bfs.front().y;
-        xy2.x=bfs.front().x;
+    map_reductor[xy1.x][xy1.y] = -2;
+    while(!bfs.empty()) {
+        xy2.y = bfs.front().y;
+        xy2.x = bfs.front().x;
         bfs.pop();
-        for(int i=0; i<4; i++)
-        {
-            xy1.x=xy2.x+x_bfs[i];
-            xy1.y=xy2.y+y_bfs[i];
-            if(map_reductor[xy1.x][xy1.y]==-1)
-            {
-                map_reductor[xy1.x][xy1.y]=-2;
+        for(int i=0; i<4; i++) {
+            xy1.x = xy2.x + x_bfs[i];
+            xy1.y = xy2.y + y_bfs[i];
+            if(map_reductor[xy1.x][xy1.y] == -1) {
+                map_reductor[xy1.x][xy1.y] = -2;
                 bfs.push(xy1);
             }
         }
     }
-	for(int ist = 4; ist<CHUNK_SIZE-6; ist++)
-    {
-		for(int jst = 4; jst<CHUNK_SIZE-6; jst++)
-        {
-            if(map_reductor[ist][jst]==-1)
-            {
-                xy1.x=ist;
-                xy1.y=jst;
+	for(int ist = 4; ist<CHUNK_SIZE - 6; ist++) {
+		for(int jst = 4; jst<CHUNK_SIZE - 6; jst++) {
+            if(map_reductor[ist][jst] == -1) {
+                xy1.x = ist;
+                xy1.y = jst;
                 bfs.push(xy1);
-                map_reductor[ist][jst]=0;
-                int square=0;
+                map_reductor[ist][jst] = 0;
+                int square = 0;
                 std::queue <Coords> closer_walls;
-                while(!bfs.empty())
-                {
-                    xy1.x=bfs.front().x;
-                    xy1.y=bfs.front().y;
+                while(!bfs.empty()) {
+                    xy1.x = bfs.front().x;
+                    xy1.y = bfs.front().y;
                     bfs.pop();
-                    for(int i=0; i<4; i++)
-                    {
-                        int k=map_reductor[xy1.x+x_bfs[i]][xy1.y+y_bfs[i]];
-                        if(k==-1)
-                        {
-                            map_reductor[xy1.x+x_bfs[i]][xy1.y+y_bfs[i]]=0;
-                            xy2.x=xy1.x+x_bfs[i];
-                            xy2.y=xy1.y+y_bfs[i];
+                    for(int i = 0; i < 4; i++) {
+                        int k = map_reductor[xy1.x + x_bfs[i]][xy1.y + y_bfs[i]];
+                        if(k == -1) {
+                            map_reductor[xy1.x + x_bfs[i]][xy1.y + y_bfs[i]] = 0;
+                            xy2.x = xy1.x + x_bfs[i];
+                            xy2.y = xy1.y + y_bfs[i];
                             bfs.push(xy2);
                             square++;
-                        }
-                        else
-                        {
-                            if(k==-9)
-                            {
-                                map_reductor[xy1.x+x_bfs[i]][xy1.y+y_bfs[i]]=1;
-                                xy2.x=xy1.x+x_bfs[i];
-                                xy2.y=xy1.y+y_bfs[i];
+                        } else {
+                            if(k == -9) {
+                                map_reductor[xy1.x + x_bfs[i]][xy1.y + y_bfs[i]] = 1;
+                                xy2.x = xy1.x + x_bfs[i];
+                                xy2.y = xy1.y + y_bfs[i];
                                 closer_walls.push(xy2);
                             }
                         }
                     }
                 }
-                if(square<5) {
-                    for(int i = 7; i<CHUNK_SIZE-7; i++)
-                    {
-                        for(int j = 7; j<CHUNK_SIZE-7; j++)
-                        {
-                            switch(map_reductor[i][j])
-                            {
-                            case 0:
-                            {
-                                map_reductor[i][j]=-9;
-                                map_[i][j]='w';
-                                break;
-                            }
-                            case 1:
-                            {
-                                map_reductor[i][j]=-9;
-                                break;
-                            }
-                            default:
-                            {
-                                break;
-                            }
+                if(square < 5) {
+                    for(int i = 7; i < CHUNK_SIZE-7; i++) {
+                        for(int j = 7; j < CHUNK_SIZE-7; j++) {
+                            switch(map_reductor[i][j]) {
+                                case 0: {
+                                    map_reductor[i][j]=-9;
+                                    map_[i][j]='w';
+                                    break;
+                                }
+                                case 1: {
+                                    map_reductor[i][j]=-9;
+                                    break;
+                                }
+                                default: {
+                                    break;
+                                }
                             }
                         }
                     }
-                }
-                else
-                {
-                    int Flag=123;
-                    while(Flag==123)
-                    {
-                        xy1=closer_walls.front();
+                } else {
+                    int Flag = 123;
+                    while(Flag == 123) {
+                        xy1 = closer_walls.front();
                         closer_walls.pop();
 
-                        for(int i=0; i<4; i++)
-                        {
-                            if(xy1.x==0||xy1.y==0||xy1.y==CHUNK_SIZE-1||xy1.x==CHUNK_SIZE-1)
+                        for(int i = 0; i < 4; i++) {
+                            if(xy1.x == 0 || xy1.y == 0 || xy1.y == CHUNK_SIZE-1 || xy1.x == CHUNK_SIZE-1) {
                                 continue;
-                            else
-                                switch(map_reductor[xy1.x+x_bfs[i]][xy1.y+y_bfs[i]])
-                                {
-                                case -9:
-                                {
-                                    xy2.x=xy1.x+x_bfs[i];
-                                    xy2.y=xy1.y+y_bfs[i];
-                                    closer_walls.push(xy2);
-                                    map_reductor[xy1.x+x_bfs[i]][xy1.y+y_bfs[i]]=map_reductor[xy1.x][xy1.y]+1;
-                                    break;
+                            } else {
+                                switch(map_reductor[xy1.x + x_bfs[i]][xy1.y + y_bfs[i]]) {
+                                    case -9: {
+                                        xy2.x = xy1.x + x_bfs[i];
+                                        xy2.y = xy1.y + y_bfs[i];
+                                        closer_walls.push(xy2);
+                                        map_reductor[xy1.x + x_bfs[i]][xy1.y + y_bfs[i]] = map_reductor[xy1.x][xy1.y] + 1;
+                                        break;
+                                    }
+                                    case -1: {
+                                        Flag = -1;
+                                        break;
+                                    }
+                                    case -2: {
+                                        Flag = -2;
+                                        break;
+                                    }
+                                    default: {
+                                        break;
+                                    }
                                 }
-                                case -1:
-                                {
-                                    Flag=-1;
-                                    break;
-                                }
-                                case -2:
-                                {
-                                    Flag=-2;
-                                    break;
-                                }
-                                default:
-                                {
-                                    break;
-                                }
-                                }
-                            if(Flag!=123)
-                            {
+                            }
+                            if(Flag != 123) {
                                 break;
                             }
 						}
 					}
-					while(!closer_walls.empty())
+					while(!closer_walls.empty()) {
                         closer_walls.pop();
-                    int way;
-					way=map_reductor[xy1.x][xy1.y];
-					while(map_reductor[xy1.x][xy1.y]!=0)
-                    {
-                        int x_add=0;
-                        int y_add=0;
-                        for(int i=0; i<4; i++)
+                    }
+                    int way = map_reductor[xy1.x][xy1.y];
+					while(map_reductor[xy1.x][xy1.y] != 0) {
+                        int x_add = 0;
+                        int y_add = 0;
+                        for(int i = 0; i < 4; i++)
                         {
-                            if(map_reductor[xy1.x][xy1.y]-1==map_reductor[xy1.x+x_bfs[i]][xy1.y+y_bfs[i]]&&x_add==0&&y_add==0)
-                            {
-                                x_add=x_bfs[i];
-                                y_add=y_bfs[i];
-                            }
-                            else
-                            {
-                                switch(map_reductor[xy1.x+x_bfs[i]][xy1.y+y_bfs[i]])
-                                {
-                                case -1:
-                                {
-                                    break;
-                                }
-                                case -2:
-                                {
-                                    break;
-                                }
-                                case 0:
-                                {
-                                    break;
-                                }
-                                case -3:
-                                {
-                                    break;
-                                }
-                                default:
-                                {
-                                    xy2.x=xy1.x+x_bfs[i];
-                                    xy2.y=xy1.y+y_bfs[i];
-                                    if(map_reductor[xy2.x][xy2.y]<way+1)
-                                    {
-                                        closer_walls.push(xy2);
-										map_reductor[xy1.x+x_bfs[i]][xy1.y+y_bfs[i]]=way+3;
+                            if(map_reductor[xy1.x][xy1.y]-1 == map_reductor[xy1.x + x_bfs[i]][xy1.y + y_bfs[i]] && x_add == 0 && y_add == 0) {
+                                x_add = x_bfs[i];
+                                y_add = y_bfs[i];
+                            } else {
+                                switch(map_reductor[xy1.x + x_bfs[i]][xy1.y + y_bfs[i]]) {
+                                    case 0,-1,-2,-3: {
+                                        break;
                                     }
-                                    break;
-                                }
+                                    default: {
+                                        xy2.x = xy1.x + x_bfs[i];
+                                        xy2.y = xy1.y + y_bfs[i];
+                                        if(map_reductor[xy2.x][xy2.y] < way+1) {
+                                            closer_walls.push(xy2);
+                                            map_reductor[xy1.x + x_bfs[i]][xy1.y + y_bfs[i]] = way + 3;
+                                        }
+                                        break;
+                                    }
                                 }
                             }
                         }
-                        map_reductor[xy1.x][xy1.y]=-3;
-                        xy1.x+=x_add;
-                        xy1.y+=y_add;
+                        map_reductor[xy1.x][xy1.y] = -3;
+                        xy1.x += x_add;
+                        xy1.y += y_add;
                     }
-                    while(!closer_walls.empty())
-                    {
-                        xy1.x=closer_walls.front().x;
-                        xy1.y=closer_walls.front().y;
-						if(map_reductor[xy1.x][xy1.y]<way+5&&map_reductor[xy1.x][xy1.y]>way+1)
-                        {
-                            for(int i=0; i<4; i++)
-                            {
-                                switch(map_reductor[xy1.x+x_bfs[i]][xy1.y+y_bfs[i]])
-                                {
-                                case -9:
-                                {
-                                    xy2.x=xy1.x+x_bfs[i];
-                                    xy2.y=xy1.y+y_bfs[i];
-                                    closer_walls.push(xy2);
-                                    map_reductor[xy1.x+x_bfs[i]][xy1.y+y_bfs[i]]=map_reductor[xy1.x][xy1.y]+1;
-                                    break;
-                                }
-                                case -1:
-                                {
-                                    break;
-                                }
-                                case -2:
-                                {
-                                    break;
-                                }
-                                case -3:
-                                {
-                                    break;
-                                }
-                                case 0:
-                                {
-                                    break;
-                                }
-                                default:
-                                {
-                                    if(way+1>map_reductor[xy1.x+x_bfs[i]][xy1.y+y_bfs[i]])
-                                    {
-                                        xy2.x=xy1.x+x_bfs[i];
-                                        xy2.y=xy1.y+y_bfs[i];
+                    while(!closer_walls.empty()) {
+                        xy1.x = closer_walls.front().x;
+                        xy1.y = closer_walls.front().y;
+						if(map_reductor[xy1.x][xy1.y] < way + 5 && map_reductor[xy1.x][xy1.y] > way + 1) {
+                            for(int i = 0; i < 4; i++) {
+                                switch(map_reductor[xy1.x + x_bfs[i]][xy1.y + y_bfs[i]]) {
+                                    case -9: {
+                                        xy2.x = xy1.x + x_bfs[i];
+                                        xy2.y = xy1.y + y_bfs[i];
                                         closer_walls.push(xy2);
-                                        map_reductor[xy1.x+x_bfs[i]][xy1.y+y_bfs[i]]=map_reductor[xy1.x][xy1.y]+1;
+                                        map_reductor[xy1.x + x_bfs[i]][xy1.y + y_bfs[i]] = map_reductor[xy1.x][xy1.y] + 1;
+                                        break;
                                     }
-                                    break;
-                                }
+                                    case -1,-2,-3,0: {
+                                        break;
+                                    }
+                                    default: {
+                                        if(way + 1 > map_reductor[xy1.x + x_bfs[i]][xy1.y + y_bfs[i]]) {
+                                            xy2.x = xy1.x + x_bfs[i];
+                                            xy2.y = xy1.y + y_bfs[i];
+                                            closer_walls.push(xy2);
+                                            map_reductor[xy1.x + x_bfs[i]][xy1.y + y_bfs[i]] = map_reductor[xy1.x][xy1.y] + 1;
+                                        }
+                                        break;
+                                    }
                                 }
                             }
                         }
                         closer_walls.pop();
                     }
-                    for(int i = 0; i<CHUNK_SIZE-1; i++)
-                    {
-                        for(int j = 0; j<CHUNK_SIZE-1; j++)
-                        {
-                            switch(map_reductor[i][j])
-                            {
-                            case 0:
-                            {
-                                map_reductor[i][j]=Flag;
-                                break;
-                            }
-                            case -1:
-                            {
-                                break;
-                            }
-                            case -2:
-                            {
-                                break;
-                            }
-                            case -3:
-                            {
-
-                                    map_[i][j]='f';
+                    for(int i = 0; i < CHUNK_SIZE - 1; i++) {
+                        for(int j = 0; j < CHUNK_SIZE - 1; j++) {
+                            switch(map_reductor[i][j]) {
+                                case 0: {
                                     map_reductor[i][j]=Flag;
                                     break;
-							}
-                                case -9:
-                                {
+                                }
+                                case -1,-2,-9: {
                                     break;
                                 }
-                                default:
-                                {
-									if(map_reductor[i][j]>way+1)
-                                    {
-                                        map_[i][j]='a';
-                                    }
-                                    map_reductor[i][j]=-9;
-									break;
+                                case -3: {
+                                    map_[i][j] = 'f';
+                                    map_reductor[i][j] = Flag;
+                                    break;
                                 }
-
+                                default: {
+                                    if(map_reductor[i][j] > way + 1)
+                                    {
+                                        map_[i][j] = 'a';
+                                    }
+                                    map_reductor[i][j] = -9;
+                                    break;
+                                }
                             }
                         }
                     }
@@ -396,14 +312,14 @@ Coords TWorld::PopulateStartArea() {
         }
 	}
 	Coords coords;
-	for(int i = 0;i<CHUNK_SIZE;i++) {
-		for(int i1 = 0;i1<CHUNK_SIZE;i1++) {
+	for(int i = 0;i < CHUNK_SIZE;i++) {
+		for(int i1 = 0;i1 < CHUNK_SIZE;i1++) {
 			Cell* c;
 			switch(map_[i][i1]) {
 				case 'b': {
 					//c = new Bridge({i1,i});
 					//c->setTexture(this->TextureStorage->GetTexture("Bridge"));
-					if(i<CHUNK_SIZE/1.8&&i1<CHUNK_SIZE/1.8) {
+					if(i < CHUNK_SIZE / 1.8 && i1 < CHUNK_SIZE / 1.8) {
 						coords.x = i1;
 						coords.y = i;
 					}
@@ -417,7 +333,7 @@ Coords TWorld::PopulateStartArea() {
 				case 'f': {
 					c = new Floor({i1,i});
 					c->setTexture(this->TextureStorage->GetTexture("StoneFloor"));
-					if(i<CHUNK_SIZE/1.8&&i1<CHUNK_SIZE/1.8) {
+					if(i < CHUNK_SIZE / 1.8 && i1 < CHUNK_SIZE / 1.8) {
 						coords.x = i1;
 						coords.y = i;
 					}
