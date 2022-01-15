@@ -10,5 +10,6 @@
 #include "Floor.h"
 
 class Bridge : public Floor {
-
+public:
+    using Floor::Floor;
 };

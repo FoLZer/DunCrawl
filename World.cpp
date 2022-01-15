@@ -300,7 +300,7 @@ Coords TWorld::PopulateStartArea() {
                                     break;
                                 }
                                 case -3: {
-                                    map_[i][j] = 'f';
+                                    map_[i][j] = 'b';
                                     map_reductor[i][j] = Flag;
                                     break;
                                 }
@@ -325,8 +325,8 @@ Coords TWorld::PopulateStartArea() {
 			Cell* c;
 			switch(map_[i][i1]) {
 				case 'b': {
-					//c = new Bridge({i1,i});
-					//c->setTexture(this->TextureStorage->GetTexture("Bridge"));
+					c = new Bridge({i1,i});
+					c->setTexture(this->TextureStorage->GetTexture("Bridge"));
 					if(i < CHUNK_SIZE / 1.8 && i1 < CHUNK_SIZE / 1.8) {
 						coords.x = i1;
 						coords.y = i;
