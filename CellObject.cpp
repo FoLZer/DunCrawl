@@ -10,6 +10,10 @@ CellObject::CellObject(Cell* _loc) {
     this->loc = _loc;
 }
 
+CellObject::~CellObject() {
+
+}
+
 Cell* CellObject::getLoc() {
     return this->loc;
 }

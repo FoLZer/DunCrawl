@@ -9,8 +9,8 @@
 #include <ctime>
 
 int CHUNK_SIZE = 64;
-
 const int CELL_SIZE = 50;
+
 const int x_bfs[]{-1,1,0,0};
 const int y_bfs[]{0,0,-1,1};
 
@@ -35,7 +35,7 @@ int TWorld::LocToArI(const int x, const int y) {
 
 Coords TWorld::PopulateStartArea() {
 	int amount_ = 17, size_ = 2;
-	char map_[CHUNK_SIZE][CHUNK_SIZE];
+	std::vector<std::vector<char>> map_(CHUNK_SIZE, std::vector<char>(CHUNK_SIZE, 'w'));
 	int seed = time(NULL);
 	srand(seed);
 	for(int i=0; i < CHUNK_SIZE; i++) {
@@ -78,8 +78,8 @@ Coords TWorld::PopulateStartArea() {
 			}
 		}
 	}
-	int map_reductor[CHUNK_SIZE][CHUNK_SIZE];
-    for(int i=0; i < CHUNK_SIZE - 1; i++) {
+	std::vector<std::vector<int>> map_reductor(CHUNK_SIZE, std::vector<int>(CHUNK_SIZE,0));
+	for(int i=0; i < CHUNK_SIZE - 1; i++) {
         for(int j=0; j < CHUNK_SIZE - 1; j++) {
             switch(map_[i][j]) {
                 case 'w': {
@@ -278,7 +278,7 @@ Coords TWorld::PopulateStartArea() {
                                             xy2.x = xy1.x + x_bfs[i];
                                             xy2.y = xy1.y + y_bfs[i];
                                             closer_walls.push(xy2);
-                                            map_reductor[xy1.x + x_bfs[i]][xy1.y + y_bfs[i]] = map_reductor[xy1.x][xy1.y] + 1;
+											map_reductor[xy1.x + x_bfs[i]][xy1.y + y_bfs[i]] = map_reductor[xy1.x][xy1.y] + 1;
                                         }
                                         break;
                                     }
@@ -366,8 +366,21 @@ Coords TWorld::PopulateStartArea() {
 void TWorld::InitializeWorld(const int _width, const int _height) {
 	this->width = _width;
 	this->height = _height;
+	for(int i=0;i<this->objects.size();i++) {
+		if(this->objects[i] != NULL) {
+			delete this->objects[i];
+		}
+	}
+	this->objects.clear();
+	this->objects.shrink_to_fit();
+	for(int i=0;i<this->_world.size();i++) {
+		if(this->_world[i] != NULL) {
+			delete this->_world[i];
+		}
+    }
+	this->_world.clear();
 	this->_world.resize(_width * _height);
-	CHUNK_SIZE=width;
+	CHUNK_SIZE = _width;
 }
 void TWorld::DrawFrame(TDrawingScreen* Screen) {
 	Cell* centerCell = this->player->getLoc();

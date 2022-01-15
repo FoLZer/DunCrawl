@@ -9,6 +9,7 @@
 #include <queue>
 
 #include "Cell.h"
+#include "CellObject.h"
 #include "Floor.h"
 #include "Water.h"
 #include "Wall.h"

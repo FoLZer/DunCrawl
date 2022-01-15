@@ -27,7 +27,6 @@ void __fastcall TMainForm::FormCreate(TObject *Sender)
 	this->InitializeTextures();
 	this->LoadTextures();
 	this->CreateWorld(64);
-	this->DrawFrame();
 }
 //---------------------------------------------------------------------------
 
