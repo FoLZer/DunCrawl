@@ -407,6 +407,8 @@ void TWorld::DrawFrame(TDrawingScreen* Screen) {
 void TWorld::SetupPlayer(Coords coords) {
 	Floor* floor = static_cast<Floor*>(this->getCellByLoc(coords.x,coords.y));
 	this->player = this->createObject<Player>(floor);
+	this->player->setMaxHealth(100);
+    this->player->setHealth(100);
 	this->player->setTexture(this->TextureStorage->GetTexture("Knight_skin"));
 }
 template<class T> T* TWorld::createObject(Cell* loc) {
@@ -435,5 +437,9 @@ void TWorld::MovePlayer(int r_x, int r_y) {
 		return;
 	}
 	this->player->MoveTo(c);
+}
+
+Player* TWorld::getPlayer() {
+	return this->player;
 }
 

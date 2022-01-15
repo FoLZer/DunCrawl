@@ -32,9 +32,10 @@ void __fastcall TMainForm::FormCreate(TObject *Sender)
 
 void TMainForm::DrawFrame() {
 	this->World->DrawFrame(this->DrawScreen);
-	this->DrawScreen->DrawLine({{Screen->Width/2,0},{Screen->Width/2,Screen->Height}},clBlack);
-	this->DrawScreen->DrawLine({{0,Screen->Height/2},{Screen->Width,Screen->Height/2}},clBlack);
-
+	Player* p = this->World->getPlayer();
+	int health = p->getHealth();
+	int maxHealth = p->getMaxHealth();
+	this->DrawScreen->DrawText({10,10}, clRed,"HP: "+IntToStr(health)+" / "+IntToStr(maxHealth));
 	this->DrawScreen->Draw();
 }
 
@@ -95,10 +96,7 @@ void __fastcall TMainForm::FormKeyPress(TObject *Sender, System::WideChar &Key)
 		}
 	}
 	if(redraw) {
-		this->World->DrawFrame(this->DrawScreen);
-		this->DrawScreen->DrawLine({{Screen->Width/2,0},{Screen->Width/2,Screen->Height}},clBlack);
-		this->DrawScreen->DrawLine({{0,Screen->Height/2},{Screen->Width,Screen->Height/2}},clBlack);
-		this->DrawScreen->Draw();
+		this->DrawFrame();
 	}
 }
 //---------------------------------------------------------------------------

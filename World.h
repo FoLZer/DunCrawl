@@ -40,4 +40,5 @@ public:
 	void DrawFrame(TDrawingScreen* Screen);
 	void SetupPlayer(Coords coords);
 	void MovePlayer(int r_x, int r_y);
+    Player* getPlayer();
 };
