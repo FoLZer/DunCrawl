@@ -1,3 +1,5 @@
+#pragma once
+
 //---------------------------------------------------------------------------
 
 #ifndef WaterH
@@ -5,9 +7,9 @@
 //---------------------------------------------------------------------------
 #endif
 
-#include "Floor.h"
+#include "Wall.h"
 
-class Water : public Floor {
+class Water : public Wall {
 public:
-    using Floor::Floor;
+	using Wall::Wall;
 };

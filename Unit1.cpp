@@ -26,16 +26,16 @@ void __fastcall TMainForm::FormCreate(TObject *Sender)
 	this->InitializeWorld();
 	this->InitializeTextures();
 	this->LoadTextures();
-	this->CreateWorld(64);
-	this->DrawFrame();
+	this->CreateWorld(100);
 }
 //---------------------------------------------------------------------------
 
 void TMainForm::DrawFrame() {
 	this->World->DrawFrame(this->DrawScreen);
-	this->DrawScreen->DrawLine({{Screen->Width/2,0},{Screen->Width/2,Screen->Height}},clBlack);
-	this->DrawScreen->DrawLine({{0,Screen->Height/2},{Screen->Width,Screen->Height/2}},clBlack);
-
+	Player* p = this->World->getPlayer();
+	int health = p->getHealth();
+	int maxHealth = p->getMaxHealth();
+	this->DrawScreen->DrawText({10,10}, clRed,"HP: "+IntToStr(health)+" / "+IntToStr(maxHealth));
 	this->DrawScreen->Draw();
 }
 
@@ -52,8 +52,16 @@ void TMainForm::InitializeTextures() {
 	this->World->TextureStorage->DefineTexture("StoneFloor", "textures/StoneFloor.bmp");
 	this->World->TextureStorage->DefineTexture("Water", "textures/Water.bmp");
 	this->World->TextureStorage->DefineTexture("Background", "textures/Back.bmp");
-	//this->World->TextureStorage->DefineTexture("Bridge", "textures/Bridge.bmp");
+	this->World->TextureStorage->DefineTexture("Bridge", "textures/Bridge.bmp");
 	this->World->TextureStorage->DefineTexture("Knight_skin", "textures/Knight_skin.bmp", true);
+	this->World->TextureStorage->DefineTexture("Elf_skin", "textures/Elf_skin.bmp", true);
+	this->World->TextureStorage->DefineTexture("Mario_skin", "textures/Mario_skin.bmp", true);
+	this->World->TextureStorage->DefineTexture("Wizard_skin", "textures/Wizard_skin.bmp", true);
+	this->World->TextureStorage->DefineTexture("Enemy1", "textures/Enemy1.bmp", true);
+	this->World->TextureStorage->DefineTexture("Enemy2", "textures/Enemy2.bmp", true);
+	this->World->TextureStorage->DefineTexture("Enemy3", "textures/Enemy3.bmp", true);
+	this->World->TextureStorage->DefineTexture("Enemy4", "textures/Enemy4.bmp", true);
+	this->World->TextureStorage->DefineTexture("Enemy5", "textures/Enemy5.bmp", true);
 }
 
 void TMainForm::LoadTextures() {
@@ -62,8 +70,16 @@ void TMainForm::LoadTextures() {
 	this->World->TextureStorage->LoadTexture("StoneFloor");
 	this->World->TextureStorage->LoadTexture("Water");
 	this->World->TextureStorage->LoadTexture("Background");
-	//this->World->TextureStorage->LoadTexture("Bridge");
+	this->World->TextureStorage->LoadTexture("Bridge");
 	this->World->TextureStorage->LoadTexture("Knight_skin");
+	this->World->TextureStorage->LoadTexture("Elf_skin");
+	this->World->TextureStorage->LoadTexture("Mario_skin");
+	this->World->TextureStorage->LoadTexture("Wizard_skin");
+	this->World->TextureStorage->LoadTexture("Enemy1");
+	this->World->TextureStorage->LoadTexture("Enemy2");
+	this->World->TextureStorage->LoadTexture("Enemy3");
+	this->World->TextureStorage->LoadTexture("Enemy4");
+	this->World->TextureStorage->LoadTexture("Enemy5");
 }
 
 void TMainForm::InitializeWorld() {
@@ -96,10 +112,7 @@ void __fastcall TMainForm::FormKeyPress(TObject *Sender, System::WideChar &Key)
 		}
 	}
 	if(redraw) {
-		this->World->DrawFrame(this->DrawScreen);
-		this->DrawScreen->DrawLine({{Screen->Width/2,0},{Screen->Width/2,Screen->Height}},clBlack);
-		this->DrawScreen->DrawLine({{0,Screen->Height/2},{Screen->Width,Screen->Height/2}},clBlack);
-		this->DrawScreen->Draw();
+		this->DrawFrame();
 	}
 }
 //---------------------------------------------------------------------------
@@ -127,3 +140,31 @@ void __fastcall TMainForm::Exit1Click(TObject *Sender)
 	Close();
 }
 //---------------------------------------------------------------------------
+void __fastcall TMainForm::Knight1Click(TObject *Sender)
+{
+	 this->World->ChangePlayerTexture(1);
+	 this->DrawFrame();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::Rogue2Click(TObject *Sender)
+{
+	 this->World->ChangePlayerTexture(3);
+	 this->DrawFrame();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::Rogue1Click(TObject *Sender)
+{
+	 this->World->ChangePlayerTexture(2);
+	 this->DrawFrame();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::Wizard1Click(TObject *Sender)
+{
+	 this->World->ChangePlayerTexture(4);
+	 this->DrawFrame();
+}
+//---------------------------------------------------------------------------
+

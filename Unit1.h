@@ -12,6 +12,7 @@
 
 #include "DrawingScreen.h"
 #include "World.h"
+#include "Unit2.h"
 #include <Vcl.ComCtrls.hpp>
 //---------------------------------------------------------------------------
 class TMainForm : public TForm
@@ -34,12 +35,17 @@ __published:	// IDE-managed Components
 	TMenuItem *Rogue1;
 	TMenuItem *Rogue2;
 	TMenuItem *Knight1;
+	TMenuItem *Wizard1;
 	void __fastcall FormCreate(TObject *Sender);
 	void __fastcall FormKeyPress(TObject *Sender, System::WideChar &Key);
 	void __fastcall N150x1501Click(TObject *Sender);
 	void __fastcall N200x2001Click(TObject *Sender);
 	void __fastcall N300x3001Click(TObject *Sender);
 	void __fastcall Exit1Click(TObject *Sender);
+	void __fastcall Knight1Click(TObject *Sender);
+	void __fastcall Rogue2Click(TObject *Sender);
+	void __fastcall Rogue1Click(TObject *Sender);
+	void __fastcall Wizard1Click(TObject *Sender);
 private:	// User declarations
 	TDrawingScreen *DrawScreen;
 	TWorld *World;

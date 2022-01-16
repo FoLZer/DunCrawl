@@ -1,17 +1,17 @@
 #pragma once
 
 //---------------------------------------------------------------------------
-
-#ifndef MovableObjectH
-#define MovableObjectH
+#ifndef EnemyH
+#define EnemyH
 //---------------------------------------------------------------------------
 #endif
 
 #include "Cell.h"
 #include "CellObject.h"
 
-class MovableObject : public CellObject {
-public:
-    using CellObject::CellObject;
-	void MoveTo(Cell* _loc);
+class Enemy : public Entity {
+	int number;
+	public:
+	using Entity::Entity;
+	void setTextureAndNumber(TTexture* texture,int num);
 };

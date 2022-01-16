@@ -1,3 +1,5 @@
+#pragma once
+
 //---------------------------------------------------------------------------
 
 #ifndef EntityH
@@ -8,7 +10,13 @@
 #include "MovableObject.h"
 
 class Entity : public MovableObject {
-	//health,armor,etc...
+	int health;
+    int maxHealth;
+	//armor,etc...
 public:
-    using MovableObject::MovableObject;
+	Entity(Cell* _loc);
+	int getHealth();
+	void setHealth(int _health);
+	int getMaxHealth();
+	void setMaxHealth(int _maxHealth);
 };

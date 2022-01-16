@@ -18,7 +18,8 @@ protected:
     uint8_t properties;
 public:
 	Cell(Coords _loc);
-    Coords getLoc();
+	Coords getLoc();
+	void setCoords(Coords _loc);
 	virtual void DoRender(TDrawingScreen* Screen,int x,int y,int width,int height) {}
 	virtual bool isPassable();
 	void setTexture(TTexture* _texture);

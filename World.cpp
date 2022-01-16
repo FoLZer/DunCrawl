@@ -9,8 +9,8 @@
 #include <ctime>
 
 int CHUNK_SIZE = 64;
-
 const int CELL_SIZE = 50;
+
 const int x_bfs[]{-1,1,0,0};
 const int y_bfs[]{0,0,-1,1};
 
@@ -22,6 +22,7 @@ TWorld::~TWorld() {
 		delete c;
 	}
 	this->_world.clear();
+	this->objects.clear();
 }
 Cell* TWorld::getCellByLoc(Coords loc) {
 	return this->getCellByLoc(loc.x, loc.y);
@@ -35,14 +36,13 @@ int TWorld::LocToArI(const int x, const int y) {
 
 Coords TWorld::PopulateStartArea() {
 	int amount_ = 17, size_ = 2;
-	char map_[CHUNK_SIZE][CHUNK_SIZE];
+	std::vector<std::vector<char>> map_(CHUNK_SIZE, std::vector<char>(CHUNK_SIZE, 'w'));
 	int seed = time(NULL);
 	srand(seed);
 	for(int i=0; i < CHUNK_SIZE; i++) {
 		srand(rand());
 		for(int j=0; j < CHUNK_SIZE; j++) {
 			int probability1 = 0;
-
 			if(i < 8 || i > CHUNK_SIZE - 9 || j < 8 || j > CHUNK_SIZE - 9) {
 				if((rand() % 10 != 2) && (i == 7 || i == CHUNK_SIZE - 9) && (j == 7 || j == CHUNK_SIZE - 9)) {
 					map_[i][j] = 'f';
@@ -78,8 +78,8 @@ Coords TWorld::PopulateStartArea() {
 			}
 		}
 	}
-	int map_reductor[CHUNK_SIZE][CHUNK_SIZE];
-    for(int i=0; i < CHUNK_SIZE - 1; i++) {
+	std::vector<std::vector<int>> map_reductor(CHUNK_SIZE, std::vector<int>(CHUNK_SIZE,0));
+	for(int i=0; i < CHUNK_SIZE - 1; i++) {
         for(int j=0; j < CHUNK_SIZE - 1; j++) {
             switch(map_[i][j]) {
                 case 'w': {
@@ -278,7 +278,7 @@ Coords TWorld::PopulateStartArea() {
                                             xy2.x = xy1.x + x_bfs[i];
                                             xy2.y = xy1.y + y_bfs[i];
                                             closer_walls.push(xy2);
-                                            map_reductor[xy1.x + x_bfs[i]][xy1.y + y_bfs[i]] = map_reductor[xy1.x][xy1.y] + 1;
+											map_reductor[xy1.x + x_bfs[i]][xy1.y + y_bfs[i]] = map_reductor[xy1.x][xy1.y] + 1;
                                         }
                                         break;
                                     }
@@ -300,7 +300,7 @@ Coords TWorld::PopulateStartArea() {
                                     break;
                                 }
                                 case -3: {
-                                    map_[i][j] = 'f';
+                                    map_[i][j] = 'b';
                                     map_reductor[i][j] = Flag;
                                     break;
                                 }
@@ -320,13 +320,14 @@ Coords TWorld::PopulateStartArea() {
         }
 	}
 	Coords coords;
+	std::queue <Coords> enemy_place;
 	for(int i = 0;i < CHUNK_SIZE;i++) {
 		for(int i1 = 0;i1 < CHUNK_SIZE;i1++) {
 			Cell* c;
 			switch(map_[i][i1]) {
 				case 'b': {
-					//c = new Bridge({i1,i});
-					//c->setTexture(this->TextureStorage->GetTexture("Bridge"));
+					c = new Bridge({i1,i});
+					c->setTexture(this->TextureStorage->GetTexture("Bridge"));
 					if(i < CHUNK_SIZE / 1.8 && i1 < CHUNK_SIZE / 1.8) {
 						coords.x = i1;
 						coords.y = i;
@@ -345,6 +346,34 @@ Coords TWorld::PopulateStartArea() {
 						coords.x = i1;
 						coords.y = i;
 					}
+					int counter = (map_[i][i1-1 ]== 'a') + (map_[i][i1+1] == 'a') + (map_[i-1][i1] == 'a') +
+					(map_[i+1][i1] == 'a') + (map_[i][i1-1] == 'w')+(map_[i][i1+1] == 'w') + (map_[i-1][i1] == 'w') +
+					(map_[i+1][i1] == 'w');
+					switch (counter) {
+						case 0:{
+						counter=10;
+						break;
+						}
+						case 1:{
+						counter=4;
+						break;
+						}
+						case 2:{
+						counter=5;
+						break;
+						}
+						case 3:{
+						counter=65;
+						break;
+						}
+					}
+					if(counter>rand()%101)
+					{
+						Coords dx;
+						dx.x = i1;
+						dx.y = i;
+						enemy_place.push(dx);
+					}
 					break;
 				}
 				case 'a': {
@@ -360,22 +389,42 @@ Coords TWorld::PopulateStartArea() {
 			this->_world[a] = c;
 		}
 	}
+	while(!enemy_place.empty())
+	{
+	   SetupEnemy(enemy_place.front(),rand() % 5 + 1);
+	   //discomment if SetupEnemy fixed
+	   enemy_place.pop();
+	}
 	return coords;
+}
+void TWorld::CreateArena(){
+
 }
 
 void TWorld::InitializeWorld(const int _width, const int _height) {
 	this->width = _width;
 	this->height = _height;
+	for(int i=0;i<this->objects.size();i++) {
+		if(this->objects[i] != NULL) {
+			delete this->objects[i];
+		}
+	}
+	this->objects.clear();
+	this->objects.shrink_to_fit();
+	for(int i=0;i<this->_world.size();i++) {
+		delete this->_world[i];
+    }
+	this->_world.clear();
 	this->_world.resize(_width * _height);
-	CHUNK_SIZE=width;
+	CHUNK_SIZE = _width;
 }
 void TWorld::DrawFrame(TDrawingScreen* Screen) {
 	Cell* centerCell = this->player->getLoc();
 	Coords centerLoc = centerCell->getLoc();
 	Screen->Clear();
 	Screen->DrawTextureRepeat({{centerLoc.x*4,centerLoc.y*4},{Screen->getWidth(),Screen->getHeight()}},this->TextureStorage->GetTexture("Background"));
-	for(int x=std::max(centerLoc.x-7,0);x<std::min(centerLoc.x+7,this->width);x++) {
-		for(int y=std::max(centerLoc.y-7,0);y<std::min(centerLoc.y+7,this->height);y++) {
+	for(int x=std::max(centerLoc.x-7,0);x<=std::min(centerLoc.x+7,this->width-1);x++) {
+		for(int y=std::max(centerLoc.y-7,0);y<=std::min(centerLoc.y+7,this->height-1);y++) {
 			Cell* c = this->getCellByLoc(x,y);
 			if(c == NULL) {
 				continue;
@@ -391,11 +440,57 @@ void TWorld::DrawFrame(TDrawingScreen* Screen) {
 		}
     }
 }
+
 void TWorld::SetupPlayer(Coords coords) {
 	Floor* floor = static_cast<Floor*>(this->getCellByLoc(coords.x,coords.y));
 	this->player = this->createObject<Player>(floor);
-	this->player->setTexture(this->TextureStorage->GetTexture("Knight_skin"));
+	this->player->setMaxHealth(100);
+	this->player->setHealth(100);
+	this->player->setTexture(this->TextureStorage->GetTexture("Wizard_skin"));
 }
+
+void TWorld::SetupEnemy(Coords coords,int type){
+	Floor* d = static_cast<Floor*>(this->getCellByLoc(coords.x,coords.y));
+	/// NEED TO REWRITE FUNCTION, THAT ADDS ENEMIES CORRECTLY
+	Entity* current_enemy = this->createObject<Entity>(d);
+	switch (type){
+	case 1:{
+	current_enemy->setMaxHealth(80);
+	current_enemy->setHealth(80);
+	current_enemy->setTexture(this->TextureStorage->GetTexture("Enemy1"));
+	break;
+	}
+	case 2:{
+	current_enemy->setMaxHealth(140);
+	current_enemy->setHealth(140);
+	current_enemy->setTexture(this->TextureStorage->GetTexture("Enemy2"));
+	break;
+	}
+	case 3:{
+	current_enemy->setMaxHealth(40);
+	current_enemy->setHealth(40);
+	current_enemy->setTexture(this->TextureStorage->GetTexture("Enemy3"));
+	break;
+	}
+	case 4:{
+	current_enemy->setMaxHealth(40);
+	current_enemy->setHealth(40);
+	current_enemy->setTexture(this->TextureStorage->GetTexture("Enemy4"));
+	break;
+	}
+	case 5:{
+	current_enemy->setMaxHealth(120);
+	current_enemy->setHealth(120);
+	current_enemy->setTexture(this->TextureStorage->GetTexture("Enemy5"));
+	break;
+	}
+	default:{
+	  break;
+	}
+	}
+	//this->enemys[enemys.size() - 1] = (current_enemy);
+}
+
 template<class T> T* TWorld::createObject(Cell* loc) {
 	T* obj = new T(loc);
 	int n = this->objects.capacity();
@@ -403,6 +498,7 @@ template<class T> T* TWorld::createObject(Cell* loc) {
 	this->objects[n] = obj;
 	return obj;
 }
+
 void TWorld::MovePlayer(int r_x, int r_y) {
 	Cell* curCel = this->player->getLoc();
 	Coords curLoc = curCel->getLoc();
@@ -422,5 +518,33 @@ void TWorld::MovePlayer(int r_x, int r_y) {
 		return;
 	}
 	this->player->MoveTo(c);
+}
+
+Player* TWorld::getPlayer() {
+	return this->player;
+}
+void TWorld::ChangePlayerTexture (int num){
+	switch (num){
+	case 1:{
+	//set knight texture
+	this->player->setTexture(this->TextureStorage->GetTexture("Knight_skin"));
+	break;
+	}
+	case 2:{
+	//set elf texture
+	this->player->setTexture(this->TextureStorage->GetTexture("Elf_skin"));
+	break;
+	}
+	case 3:{
+	//set Mario texture
+	this->player->setTexture(this->TextureStorage->GetTexture("Mario_skin"));
+	break;
+	}
+	case 4:{
+	//set Wizard texture
+	this->player->setTexture(this->TextureStorage->GetTexture("Wizard_skin"));
+	break;
+	}
+	}
 }
 
