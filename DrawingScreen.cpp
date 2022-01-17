@@ -81,10 +81,11 @@ void TDrawingScreen::Clear() {
     this->DrawRect({{0,0},{this->_imageBuf->Width,this->_imageBuf->Height}},clWhite,clWhite);
 }
 
-void TDrawingScreen::DrawText(const Coords c, const TColor col, String text) {
+void TDrawingScreen::DrawText(const Coords c, const TColor col, int size, String text) {
 	this->_imageBuf->Canvas->Brush->Style = bsClear;
 	TColor tempC = this->_imageBuf->Canvas->Pen->Color;
 	this->_imageBuf->Canvas->Font->Color = col;
+	this->_imageBuf->Canvas->Font->Size = size;
 	this->_imageBuf->Canvas->TextOut(c.x,c.y,text);
     this->_imageBuf->Canvas->Font->Color = tempC;
 }

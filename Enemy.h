@@ -8,10 +8,15 @@
 
 #include "Cell.h"
 #include "CellObject.h"
+#include "Entity.h"
 
 class Enemy : public Entity {
 	int number;
 	public:
-	using Entity::Entity;
+	Enemy(Cell* _loc);
+	~Enemy();
+	//using Entity::Entity;
+	void setNumber(int num);
+	int getNumber();
 	void setTextureAndNumber(TTexture* texture,int num);
 };

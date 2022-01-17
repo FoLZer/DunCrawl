@@ -1,21 +1,20 @@
 //---------------------------------------------------------------------------
-
 #include <vcl.h>
 #pragma hdrstop
 #include <tchar.h>
 //---------------------------------------------------------------------------
 USEFORM("Unit1.cpp", MainForm);
 USEFORM("Unit2.cpp", Form2);
-i//---------------------------------------------------------------------------
-nt WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
+//---------------------------------------------------------------------------
+int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
 {
 	try
 	{
 		Application->Initialize();
 		Application->MainFormOnTaskBar = true;
-		ApApplication->CreateForm(__classid(TMainForm), &MainForm);
+		Application->CreateForm(__classid(TMainForm), &MainForm);
 		Application->CreateForm(__classid(TForm2), &Form2);
-		plication->Run();
+		Application->Run();
 	}
 	catch (Exception &exception)
 	{

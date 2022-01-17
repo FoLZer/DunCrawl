@@ -15,6 +15,7 @@ class Entity : public MovableObject {
 	//armor,etc...
 public:
 	Entity(Cell* _loc);
+	~Entity();
 	int getHealth();
 	void setHealth(int _health);
 	int getMaxHealth();

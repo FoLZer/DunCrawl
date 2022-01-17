@@ -34,6 +34,15 @@ int TWorld::LocToArI(const int x, const int y) {
 	return x * this->width + y;
 }
 
+bool TWorld::check_objects(Coords coords){
+	 for(int i=0;i<objects.size();i++){
+		for (int j=0;j<4;j++)
+		  if(objects[i]->getLoc()->getLoc().x + x_bfs[j] == coords.x && objects[i]->getLoc()->getLoc().y + y_bfs[j] == coords.y)
+			return false;
+	 }
+	 return true;
+}
+
 Coords TWorld::PopulateStartArea() {
 	int amount_ = 17, size_ = 2;
 	std::vector<std::vector<char>> map_(CHUNK_SIZE, std::vector<char>(CHUNK_SIZE, 'w'));
@@ -321,6 +330,7 @@ Coords TWorld::PopulateStartArea() {
 	}
 	Coords coords;
 	std::queue <Coords> enemy_place;
+	int number_of_keys=0;
 	for(int i = 0;i < CHUNK_SIZE;i++) {
 		for(int i1 = 0;i1 < CHUNK_SIZE;i1++) {
 			Cell* c;
@@ -328,9 +338,25 @@ Coords TWorld::PopulateStartArea() {
 				case 'b': {
 					c = new Bridge({i1,i});
 					c->setTexture(this->TextureStorage->GetTexture("Bridge"));
-					if(i < CHUNK_SIZE / 1.8 && i1 < CHUNK_SIZE / 1.8) {
-						coords.x = i1;
-						coords.y = i;
+					bool FLag=false;
+					if(number_of_keys<5){
+					 FLag=true;
+					 for(int j=0;j<key_coords.size();j++){
+					   if(sqrt((key_coords[i].x - i1)*(double)(key_coords[i].x - i1) + (key_coords[i].y - i)*(key_coords[i].x - i1))<CHUNK_SIZE/4)
+					   {
+							 FLag=false;
+							 break;
+					   }
+					 }
+					}
+					if(FLag){
+					key_coords.push_back({i1,i});
+                    number_of_keys++;
+					}else{
+                    if(i < CHUNK_SIZE / 1.8 && i1 < CHUNK_SIZE / 1.8) {
+								coords.x = i1;
+								coords.y = i;
+							 }
 					}
 					break;
 				}
@@ -342,37 +368,75 @@ Coords TWorld::PopulateStartArea() {
 				case 'f': {
 					c = new Floor({i1,i});
 					c->setTexture(this->TextureStorage->GetTexture("StoneFloor"));
-					if(i < CHUNK_SIZE / 1.8 && i1 < CHUNK_SIZE / 1.8) {
-						coords.x = i1;
-						coords.y = i;
+					bool Flag=true;
+					if(number_of_keys<5){
+					 for(int j=0;j<key_coords.size();j++){
+					   if(sqrt((key_coords[i].x - i1)*(double)(key_coords[i].x - i1) + (key_coords[i].y - i)*(key_coords[i].x - i1))>CHUNK_SIZE/5)
+					   {
+							 Flag=false;
+							 break;
+					   }
+					 }
 					}
-					int counter = (map_[i][i1-1 ]== 'a') + (map_[i][i1+1] == 'a') + (map_[i-1][i1] == 'a') +
-					(map_[i+1][i1] == 'a') + (map_[i][i1-1] == 'w')+(map_[i][i1+1] == 'w') + (map_[i-1][i1] == 'w') +
-					(map_[i+1][i1] == 'w');
-					switch (counter) {
+					if(Flag==false){
+					   number_of_keys++;
+					   key_coords.push_back({i1,i});
+					   break;
+					}
+					if(!enemy_place.empty()){
+					   Coords checker, locker;
+					   checker.y = i1;
+					   checker.x = i;
+					   locker = enemy_place.front();
+					   enemy_place.pop();
+					   enemy_place.push(locker);
+					   while(enemy_place.front().x != locker.x && enemy_place.front().y != locker.y)
+					   {
+							if (!((abs(enemy_place.front().x - checker.x) > 1) || (abs(enemy_place.front().y  - checker.y) > 1)))
+								{Flag = false;}
+							enemy_place.push(enemy_place.front());
+							enemy_place.pop();
+					   }
+					}else{
+					   Flag=true;
+					}
+					if(Flag==true)
+					{
+					   int counter = (map_[i][i1-1]== 'a') + (map_[i][i1+1] == 'a') + (map_[i-1][i1] == 'a') +
+					   (map_[i+1][i1] == 'a') + (map_[i][i1-1] == 'w')+(map_[i][i1+1] == 'w') + (map_[i-1][i1] == 'w') +
+					   (map_[i+1][i1] == 'w');
+					   switch (counter) {
 						case 0:{
-						counter=10;
+						counter=1;
 						break;
 						}
 						case 1:{
-						counter=4;
+						counter=10;
 						break;
 						}
 						case 2:{
-						counter=5;
+						counter=20;
 						break;
 						}
 						case 3:{
-						counter=65;
+						counter=50;
 						break;
 						}
-					}
-					if(counter>rand()%101)
-					{
+					   }
+					   if(counter>rand()%101)
+					   {
 						Coords dx;
 						dx.x = i1;
 						dx.y = i;
 						enemy_place.push(dx);
+					   }
+					   else
+					   {
+                         if(i < CHUNK_SIZE / 1.8 && i1 < CHUNK_SIZE / 1.8) {
+						  coords.x = i1;
+						  coords.y = i;
+						 }
+					   }
 					}
 					break;
 				}
@@ -389,16 +453,42 @@ Coords TWorld::PopulateStartArea() {
 			this->_world[a] = c;
 		}
 	}
+	for(int i=0;i<key_coords.size();i++){
+		SetupKey(key_coords[i]);
+	}
+	Key_Number = key_coords.size();
 	while(!enemy_place.empty())
 	{
+	   if((abs(enemy_place.front().x - coords.x) > 1) || (abs(enemy_place.front().y  - coords.y) > 1))
 	   SetupEnemy(enemy_place.front(),rand() % 5 + 1);
-	   //discomment if SetupEnemy fixed
 	   enemy_place.pop();
 	}
 	return coords;
 }
-void TWorld::CreateArena(){
 
+void TWorld::SetupKey(Coords coords)
+{
+	 Floor* d = static_cast<Floor*>(this->getCellByLoc(coords.x,coords.y));
+	 CellObject* key = this->createObject<CellObject>(d);
+	 key->setTexture(this->TextureStorage->GetTexture("Key"));
+}
+int TWorld::Check_Key_Player(){
+	for(int i=0;i<key_coords.size();i++){
+		if(key_coords[i].x==player->getLoc()->getLoc().x && key_coords[i].y==player->getLoc()->getLoc().y)
+		{
+		   objects.erase(objects.begin()+i);
+		   key_coords.erase(key_coords.begin()+i);
+		   return i;
+		}
+	}
+	return -1;
+}
+int TWorld::Keys_Left(){
+	return key_coords.size();
+}
+
+int TWorld::Keys_Number(){
+	return Key_Number;
 }
 
 void TWorld::InitializeWorld(const int _width, const int _height) {
@@ -455,47 +545,52 @@ void TWorld::SetupEnemy(Coords coords,int type){
 	Entity* current_enemy = this->createObject<Entity>(d);
 	switch (type){
 	case 1:{
+
 	current_enemy->setMaxHealth(80);
 	current_enemy->setHealth(80);
 	current_enemy->setTexture(this->TextureStorage->GetTexture("Enemy1"));
+	//current_enemy->setTextureAndNumber(this->TextureStorage->GetTexture("Enemy1"),1);
 	break;
 	}
 	case 2:{
 	current_enemy->setMaxHealth(140);
 	current_enemy->setHealth(140);
 	current_enemy->setTexture(this->TextureStorage->GetTexture("Enemy2"));
+	//current_enemy->setTextureAndNumber(this->TextureStorage->GetTexture("Enemy2"),2);
 	break;
 	}
 	case 3:{
 	current_enemy->setMaxHealth(40);
 	current_enemy->setHealth(40);
 	current_enemy->setTexture(this->TextureStorage->GetTexture("Enemy3"));
+	//current_enemy->setTextureAndNumber(this->TextureStorage->GetTexture("Enemy3"),3);
 	break;
 	}
 	case 4:{
 	current_enemy->setMaxHealth(40);
 	current_enemy->setHealth(40);
 	current_enemy->setTexture(this->TextureStorage->GetTexture("Enemy4"));
+	//current_enemy->setTextureAndNumber(this->TextureStorage->GetTexture("Enemy4"),4);
 	break;
 	}
 	case 5:{
 	current_enemy->setMaxHealth(120);
 	current_enemy->setHealth(120);
 	current_enemy->setTexture(this->TextureStorage->GetTexture("Enemy5"));
+	//current_enemy->setTextureAndNumber(this->TextureStorage->GetTexture("Enemy5"),5);
 	break;
 	}
 	default:{
 	  break;
 	}
 	}
-	//this->enemys[enemys.size() - 1] = (current_enemy);
 }
 
 template<class T> T* TWorld::createObject(Cell* loc) {
 	T* obj = new T(loc);
 	int n = this->objects.capacity();
-	this->objects.reserve(n+1);
-	this->objects[n] = obj;
+	this->objects.reserve(objects.capacity() + 1);
+	this->objects.push_back(obj);
 	return obj;
 }
 

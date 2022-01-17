@@ -11,6 +11,7 @@ Entity::Entity(Cell* _loc) : MovableObject(_loc) {}
 int Entity::getHealth() {
 	return this->health;
 }
+Entity::~Entity(){}
 
 int Entity::getMaxHealth() {
 	return this->maxHealth;

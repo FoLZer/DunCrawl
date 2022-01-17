@@ -89,4 +89,11 @@ object MainForm: TMainForm
       end
     end
   end
+  object Timer1: TTimer
+    Enabled = False
+    Interval = 15
+    OnTimer = Timer1Timer
+    Left = 288
+    Top = 312
+  end
 end

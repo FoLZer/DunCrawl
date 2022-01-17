@@ -1,5 +1,5 @@
-//---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
 #ifndef Unit1H
 #define Unit1H
 //---------------------------------------------------------------------------
@@ -36,6 +36,7 @@ __published:	// IDE-managed Components
 	TMenuItem *Rogue2;
 	TMenuItem *Knight1;
 	TMenuItem *Wizard1;
+	TTimer *Timer1;
 	void __fastcall FormCreate(TObject *Sender);
 	void __fastcall FormKeyPress(TObject *Sender, System::WideChar &Key);
 	void __fastcall N150x1501Click(TObject *Sender);
@@ -46,9 +47,12 @@ __published:	// IDE-managed Components
 	void __fastcall Rogue2Click(TObject *Sender);
 	void __fastcall Rogue1Click(TObject *Sender);
 	void __fastcall Wizard1Click(TObject *Sender);
+	void __fastcall Timer1Timer(TObject *Sender);
 private:	// User declarations
 	TDrawingScreen *DrawScreen;
 	TWorld *World;
+	int delay;
+	bool game_finished;
 	void InitializeTextures();
 	void LoadTextures();
 	void InitializeWorld();
@@ -56,6 +60,7 @@ private:	// User declarations
 	void CreateWorld(int size);
 public:		// User declarations
 	__fastcall TMainForm(TComponent* Owner);
+	int type;
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TMainForm *MainForm;

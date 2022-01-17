@@ -1,13 +1,10 @@
 //---------------------------------------------------------------------------
-
 #include <vcl.h>
 #pragma hdrstop
-
 #include "Unit1.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
-
 #define KEY_UP 'w'
 #define KEY_DOWN 's'
 #define KEY_LEFT 'a'
@@ -26,16 +23,23 @@ void __fastcall TMainForm::FormCreate(TObject *Sender)
 	this->InitializeWorld();
 	this->InitializeTextures();
 	this->LoadTextures();
-	this->CreateWorld(100);
+	game_finished = false;
+	this->CreateWorld(54);
+	delay = 0;
+	Timer1->Enabled = true;
 }
 //---------------------------------------------------------------------------
-
 void TMainForm::DrawFrame() {
 	this->World->DrawFrame(this->DrawScreen);
 	Player* p = this->World->getPlayer();
 	int health = p->getHealth();
 	int maxHealth = p->getMaxHealth();
-	this->DrawScreen->DrawText({10,10}, clRed,"HP: "+IntToStr(health)+" / "+IntToStr(maxHealth));
+	this->DrawScreen->DrawText({10,10}, clRed, 15,"HP: "+IntToStr(health)+" / "+IntToStr(maxHealth));
+	this->DrawScreen->DrawText({10,35}, clYellow, 15,"Keys: "+IntToStr(this->World->Keys_Number() - this->World->Keys_Left())+" / "+IntToStr(this->World->Keys_Number()));
+	if(game_finished){
+	this->DrawScreen->DrawText({10,100}, clBlue, 85,"   Game");
+	this->DrawScreen->DrawText({10,210}, clBlue, 85,"  finished");
+	}
 	this->DrawScreen->Draw();
 }
 
@@ -45,7 +49,6 @@ void TMainForm::CreateWorld(int size) {
 	this->World->SetupPlayer(c);
 	this->DrawFrame();
 }
-
 void TMainForm::InitializeTextures() {
 	//Define textures here
 	this->World->TextureStorage->DefineTexture("StoneWall", "textures/StoneWall.bmp");
@@ -62,8 +65,8 @@ void TMainForm::InitializeTextures() {
 	this->World->TextureStorage->DefineTexture("Enemy3", "textures/Enemy3.bmp", true);
 	this->World->TextureStorage->DefineTexture("Enemy4", "textures/Enemy4.bmp", true);
 	this->World->TextureStorage->DefineTexture("Enemy5", "textures/Enemy5.bmp", true);
+	this->World->TextureStorage->DefineTexture("Key", "textures/Key.bmp", true);
 }
-
 void TMainForm::LoadTextures() {
 	//Load textures here
 	this->World->TextureStorage->LoadTexture("StoneWall");
@@ -80,16 +83,16 @@ void TMainForm::LoadTextures() {
 	this->World->TextureStorage->LoadTexture("Enemy3");
 	this->World->TextureStorage->LoadTexture("Enemy4");
 	this->World->TextureStorage->LoadTexture("Enemy5");
+	this->World->TextureStorage->LoadTexture("Key");
 }
-
 void TMainForm::InitializeWorld() {
 	this->World = new TWorld();
 }
-
 void __fastcall TMainForm::FormKeyPress(TObject *Sender, System::WideChar &Key)
 {
 	bool redraw = false;
-	switch(Key) {
+	if(delay>1 && (!game_finished)){
+		switch(Key) {
 		case KEY_UP: {
 			this->World->MovePlayer(0,-1);
 			redraw = true;
@@ -110,31 +113,34 @@ void __fastcall TMainForm::FormKeyPress(TObject *Sender, System::WideChar &Key)
 			redraw = true;
 			break;
 		}
+		}
+		delay=0;
 	}
 	if(redraw) {
+		int t =this->World->Check_Key_Player();
+		if(this->World->Keys_Left()==0)
+		{
+			game_finished=true;
+		}
 		this->DrawFrame();
 	}
 }
 //---------------------------------------------------------------------------
-
 void __fastcall TMainForm::N150x1501Click(TObject *Sender)
 {
 	this->CreateWorld(150);
 }
 //---------------------------------------------------------------------------
-
 void __fastcall TMainForm::N200x2001Click(TObject *Sender)
 {
 	this->CreateWorld(200);
 }
 //---------------------------------------------------------------------------
-
 void __fastcall TMainForm::N300x3001Click(TObject *Sender)
 {
 	this->CreateWorld(300);
 }
 //---------------------------------------------------------------------------
-
 void __fastcall TMainForm::Exit1Click(TObject *Sender)
 {
 	Close();
@@ -165,6 +171,15 @@ void __fastcall TMainForm::Wizard1Click(TObject *Sender)
 {
 	 this->World->ChangePlayerTexture(4);
 	 this->DrawFrame();
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TMainForm::Timer1Timer(TObject *Sender)
+{
+	  delay++;
+	  if(delay > 100)
+	  delay = 10;
 }
 //---------------------------------------------------------------------------
 

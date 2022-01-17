@@ -14,14 +14,11 @@ __fastcall TForm2::TForm2(TComponent* Owner)
 {
 }
 //---------------------------------------------------------------------------
-void __fastcall TForm2::FormCreate(TObject *Sender)
-{
-	int i=0;
-}
-//---------------------------------------------------------------------------
 void __fastcall TForm2::FormShow(TObject *Sender)
 {
-	int i=0;
+	//this->Arena->CreateArena();
+	//this->Arena->SetupPlayer({0,1});
+    //this->Arena->SetupEnemy({4,1},type)
 }
 //---------------------------------------------------------------------------
 void __fastcall TForm2::Timer1Timer(TObject *Sender)
