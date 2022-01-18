@@ -42,7 +42,6 @@ void TMainForm::DrawFrame() {
 	}
 	this->DrawScreen->Draw();
 }
-
 void TMainForm::CreateWorld(int size) {
 	this->World->InitializeWorld(size,size);
 	Coords c = this->World->PopulateStartArea();
@@ -117,6 +116,18 @@ void __fastcall TMainForm::FormKeyPress(TObject *Sender, System::WideChar &Key)
 		delay=0;
 	}
 	if(redraw) {
+        int a=0;
+		while(a!=-2)
+		{
+		   a=this->World->check_objects(this->World->getPlayer()->getLoc()->getLoc());
+		   if(a!=-2)
+		   {
+			  //Form2->Timer1->Enabled=true;
+			  Form2->Label1->Caption=IntToStr(player_type);
+			  Form2->Label2->Caption=IntToStr(this->World->getPlayer()->getHealth());
+			  this->World->setPlayerHP(this->World->getPlayer()->getHealth()-1);
+		   }
+		}
 		int t =this->World->Check_Key_Player();
 		if(this->World->Keys_Left()==0)
 		{
@@ -150,30 +161,30 @@ void __fastcall TMainForm::Knight1Click(TObject *Sender)
 {
 	 this->World->ChangePlayerTexture(1);
 	 this->DrawFrame();
+	 this->player_type = 1;
 }
 //---------------------------------------------------------------------------
-
 void __fastcall TMainForm::Rogue2Click(TObject *Sender)
 {
 	 this->World->ChangePlayerTexture(3);
 	 this->DrawFrame();
+	 this->player_type = 3;
 }
 //---------------------------------------------------------------------------
-
 void __fastcall TMainForm::Rogue1Click(TObject *Sender)
 {
 	 this->World->ChangePlayerTexture(2);
 	 this->DrawFrame();
+	 this->player_type = 2;
 }
 //---------------------------------------------------------------------------
-
 void __fastcall TMainForm::Wizard1Click(TObject *Sender)
 {
 	 this->World->ChangePlayerTexture(4);
 	 this->DrawFrame();
+	 this->player_type = 4;
 }
 //---------------------------------------------------------------------------
-
 
 void __fastcall TMainForm::Timer1Timer(TObject *Sender)
 {
@@ -182,4 +193,3 @@ void __fastcall TMainForm::Timer1Timer(TObject *Sender)
 	  delay = 10;
 }
 //---------------------------------------------------------------------------
-

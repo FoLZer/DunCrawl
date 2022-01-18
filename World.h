@@ -39,7 +39,7 @@ public:
 	~TWorld();
 	TTextureStorage *TextureStorage;
 	void InitializeWorld(const int width, const int height);
-	bool check_objects(Coords l);
+	int check_objects(Coords l);
 	virtual Coords PopulateStartArea();
 	Cell* getCellByLoc(Coords loc);
 	Cell* getCellByLoc(const int x, const int y);
@@ -49,8 +49,9 @@ public:
 	void SetupKey(Coords coords);
 	int Check_Key_Player();
 	int Keys_Left();
-    int Keys_Number();
+	int Keys_Number();
+	void setPlayerHP(int a);
 	void MovePlayer(int r_x, int r_y);
-    void ChangePlayerTexture(int num);
+	void ChangePlayerTexture(int num);
     Player* getPlayer();
 };

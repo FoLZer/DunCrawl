@@ -60,7 +60,7 @@ private:	// User declarations
 	void CreateWorld(int size);
 public:		// User declarations
 	__fastcall TMainForm(TComponent* Owner);
-	int type;
+	int player_type;
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TMainForm *MainForm;

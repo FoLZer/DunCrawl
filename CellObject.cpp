@@ -18,6 +18,10 @@ Cell* CellObject::getLoc() {
     return this->loc;
 }
 
+int CellObject::getMarker() {
+    return this->marker;
+}
+
 void CellObject::DoRender(TDrawingScreen* Screen,int x,int y,int width,int height) {
     Screen->DrawTexture({{x,y},{x+width,y+height}}, this->_texture);
 }
