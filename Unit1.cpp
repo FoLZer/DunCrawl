@@ -122,9 +122,14 @@ void __fastcall TMainForm::FormKeyPress(TObject *Sender, System::WideChar &Key)
 		   a=this->World->check_objects(this->World->getPlayer()->getLoc()->getLoc());
 		   if(a!=-2)
 		   {
-			  //Form2->Timer1->Enabled=true;
+		      Form2->Show();
 			  Form2->Label1->Caption=IntToStr(player_type);
 			  Form2->Label2->Caption=IntToStr(this->World->getPlayer()->getHealth());
+			  buld=-20;
+			  while(buld == -20){
+			  MainForm->Enabled = false;
+			  }
+			  MainForm->Enabled = true;
 			  this->World->setPlayerHP(this->World->getPlayer()->getHealth()-1);
 		   }
 		}

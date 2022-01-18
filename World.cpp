@@ -669,3 +669,8 @@ void TWorld::ChangePlayerTexture (int num){
 	}
 }
 
+void TWorld::EraseObjectsTillEnd(int b){
+   while(objects.size()>b)
+   {objects.erase(objects.begin()+b);}
+}
+

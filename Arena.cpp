@@ -27,16 +27,15 @@ Coords Arena::PopulateStartArea() {
 
 void Arena::SetupFire(Coords d){
 	 Floor* floor = static_cast<Floor*>(this->getCellByLoc(d));
-	 fire = this->createObject<MovableObject>(floor);
+	 fire = this->createObject<CellObject>(floor);
 	 fire->setTexture(this->TextureStorage->GetTexture("Fire1"));
 }
 
-template<class T> T* Arena::createObject(Cell* loc) {
-	T* obj = new T(loc);
-	int n = this->objects.capacity();
-	this->objects.reserve(objects.capacity() + 1);
-	this->objects.push_back(obj);
-	return obj;
+Coords Arena::getEnemyHealth(){
+		Coords d;
+		d.x = enemy->getHealth();
+		d.y = enemy->getMaxHealth();
+		return d;
 }
 
 void Arena::StartStep(Coords d) {
@@ -96,17 +95,17 @@ void Arena::SetupEnemy(Coords coords,int type){
 	}
 }
 
-void Arena::EndStep() {
+void Arena::NPCStep() {
 	 srand(time(NULL));
 	 Coords d;
-	 d.x=rand()%5;
+	 d.x=rand() % 5;
 	 int a=d.x;
 	 for(int i=0;i<4;i++){
 	 d.y=i;
 	 SetupFire(d);
 	 fire_exist_e.push_back(d);
 	 }
-	 d.y=rand()%4;
+	 d.y=rand() % 4;
 	 for(int i=0;i<5;i++){
 	 d.x=i;
 	 SetupFire(d);
@@ -114,12 +113,49 @@ void Arena::EndStep() {
 	 }
 	 d.x = a;
 	 Coords f;
-	 f.x=rand()%5;
-	 f.y=rand()%4;
+	 f.x=rand() % 5;
+	 f.y=rand() % 4;
 	 while(f.x==d.x || f.y==d.y)
 	 {
      f.x=rand()%5;
 	 f.y=rand()%4;
 	 }
-	 //enemy->MoveTo()
+	 Cell* h;
+	 h->setCoords(f);
+	 enemy->MoveTo(h);
 }
+
+void Arena::DMGCalculating(){
+   for(int i=0;i<fire_exist_e.size();i++){
+	 if(fire_exist_e[i].x == this->getPlayer()->getLoc()->getLoc().x && fire_exist_e[i].y == this->getPlayer()->getLoc()->getLoc().y)
+	 {this->setPlayerHP(this->getPlayer()->getHealth()-20);}
+   }
+   for(int i=0;i<fire_exist_p.size();i++){
+	 if(fire_exist_e[i].x == this->getPlayer()->getLoc()->getLoc().x && fire_exist_e[i].y == this->getPlayer()->getLoc()->getLoc().y)
+	 {this->setPlayerHP(this->getPlayer()->getHealth()-20);}
+	 if(fire_exist_e[i].x == this->enemy->getLoc()->getLoc().x && fire_exist_e[i].y == this->enemy->getLoc()->getLoc().y)
+	 {this->setPlayerHP(this->getPlayer()->getHealth()-20);}
+   }
+   if(this->getPlayer()->getHealth()<1)
+   {
+   result=-1;
+   }
+   if(this->enemy->getHealth() < 1)
+   {
+   this->enemy->setHealth(0);
+   result=1;
+   }
+   fire_exist_e.erase(fire_exist_e.begin(),fire_exist_e.end());
+   fire_exist_p.erase(fire_exist_p.begin(),fire_exist_p.end());
+   this->EraseObjectsTillEnd(2);
+}
+
+void Arena::set_result(int i)
+{
+	result=i;
+}
+int Arena::get_result()
+{
+    return result;
+}
+

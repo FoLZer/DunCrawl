@@ -27,16 +27,19 @@ object Form2: TForm2
     Top = 24
     Width = 3
     Height = 13
+    Visible = False
   end
   object Label2: TLabel
     Left = 152
     Top = 112
     Width = 3
     Height = 13
+    Visible = False
   end
-  object Timer1: TTimer
-    OnTimer = Timer1Timer
-    Left = 256
-    Top = 72
+  object Timer2: TTimer
+    Enabled = False
+    OnTimer = Timer2Timer
+    Left = 208
+    Top = 88
   end
 end

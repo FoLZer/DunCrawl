@@ -20,7 +20,6 @@ private:
 	int Key_Number;
 	std::vector<Coords> key_coords;
 	Player* player;
-	template<class T> T* createObject(Cell* loc);
 protected:
 	std::vector<CellObject*> objects;
 	std::vector<Cell*> _world;
@@ -28,6 +27,7 @@ protected:
 public:
 	TWorld();
 	~TWorld();
+    template<class T> T* createObject(Cell* loc);
 	TTextureStorage *TextureStorage;
 	void InitializeWorld(const int width, const int height);
 	int check_objects(Coords l);
@@ -44,5 +44,6 @@ public:
 	void setPlayerHP(int a);
 	void MovePlayer(int r_x, int r_y);
 	void ChangePlayerTexture(int num);
-    Player* getPlayer();
+	Player* getPlayer();
+	void EraseObjectsTillEnd(int b);
 };
