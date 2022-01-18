@@ -30,6 +30,6 @@ public:
 	void DrawRect(const Vector2 vec, const TColor colBounds, const TColor colIn);
 	void DrawTexture(const Vector2 bounds, TTexture* texture);
 	void DrawTextureRepeat(const Vector2 bounds, TTexture* texture);
-    void DrawText(const Coords c, const TColor col, String text);
+    void DrawText(const Coords c, const TColor col, int size, String text);
     void Clear();
 };

@@ -12,6 +12,8 @@ int Entity::getHealth() {
 	return this->health;
 }
 
+Entity::~Entity(){}
+
 int Entity::getMaxHealth() {
 	return this->maxHealth;
 }
