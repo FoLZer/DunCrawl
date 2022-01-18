@@ -52,6 +52,7 @@ Coords TWorld::PopulateStartArea() {
 		srand(rand());
 		for(int j=0; j < CHUNK_SIZE; j++) {
 			int probability1 = 0;
+
 			if(i < 8 || i > CHUNK_SIZE - 9 || j < 8 || j > CHUNK_SIZE - 9) {
 				if((rand() % 10 != 2) && (i == 7 || i == CHUNK_SIZE - 9) && (j == 7 || j == CHUNK_SIZE - 9)) {
 					map_[i][j] = 'f';
@@ -502,7 +503,9 @@ void TWorld::InitializeWorld(const int _width, const int _height) {
 	this->objects.clear();
 	this->objects.shrink_to_fit();
 	for(int i=0;i<this->_world.size();i++) {
-		delete this->_world[i];
+		if(this->_world[i] != NULL) {
+			delete this->_world[i];
+		}
     }
 	this->_world.clear();
 	this->_world.resize(_width * _height);
@@ -618,6 +621,7 @@ void TWorld::MovePlayer(int r_x, int r_y) {
 Player* TWorld::getPlayer() {
 	return this->player;
 }
+
 void TWorld::ChangePlayerTexture (int num){
 	switch (num){
 	case 1:{
