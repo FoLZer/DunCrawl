@@ -10,8 +10,9 @@
 #include "MovableObject.h"
 
 class Entity : public MovableObject {
+private:
 	int health;
-    int maxHealth;
+	int maxHealth;
 	//armor,etc...
 public:
 	Entity(Cell* _loc);
