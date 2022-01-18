@@ -10,11 +10,13 @@
 #include "MovableObject.h"
 
 class Entity : public MovableObject {
+private:
 	int health;
-    int maxHealth;
-	//health,armor,etc...
+	int maxHealth;
+	//armor,etc...
 public:
 	Entity(Cell* _loc);
+	~Entity();
 	int getHealth();
 	void setHealth(int _health);
 	int getMaxHealth();

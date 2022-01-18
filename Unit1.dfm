@@ -72,14 +72,28 @@ object MainForm: TMainForm
         Caption = 'PoV skin'
         object Rogue1: TMenuItem
           Caption = 'Elf'
+          OnClick = Rogue1Click
         end
         object Rogue2: TMenuItem
           Caption = 'Mario'
+          OnClick = Rogue2Click
         end
         object Knight1: TMenuItem
           Caption = 'Knight'
+          OnClick = Knight1Click
+        end
+        object Wizard1: TMenuItem
+          Caption = 'Wizard'
+          OnClick = Wizard1Click
         end
       end
     end
+  end
+  object Timer1: TTimer
+    Enabled = False
+    Interval = 15
+    OnTimer = Timer1Timer
+    Left = 288
+    Top = 312
   end
 end
