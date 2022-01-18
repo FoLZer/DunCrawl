@@ -545,42 +545,42 @@ void TWorld::SetupPlayer(Coords coords) {
 void TWorld::SetupEnemy(Coords coords,int type){
 	Floor* d = static_cast<Floor*>(this->getCellByLoc(coords.x,coords.y));
 	/// NEED TO REWRITE FUNCTION, THAT ADDS ENEMIES CORRECTLY
-	Entity* current_enemy = this->createObject<Entity>(d);
+	Enemy* current_enemy = this->createObject<Enemy>(d);
 	switch (type){
 	case 1:{
 
 	current_enemy->setMaxHealth(80);
 	current_enemy->setHealth(80);
-	current_enemy->setTexture(this->TextureStorage->GetTexture("Enemy1"));
-	//current_enemy->setTextureAndNumber(this->TextureStorage->GetTexture("Enemy1"),1);
+	//current_enemy->setTexture(this->TextureStorage->GetTexture("Enemy1"));
+	current_enemy->setTextureAndNumber(this->TextureStorage->GetTexture("Enemy1"),1);
 	break;
 	}
 	case 2:{
 	current_enemy->setMaxHealth(140);
 	current_enemy->setHealth(140);
-	current_enemy->setTexture(this->TextureStorage->GetTexture("Enemy2"));
-	//current_enemy->setTextureAndNumber(this->TextureStorage->GetTexture("Enemy2"),2);
+	//current_enemy->setTexture(this->TextureStorage->GetTexture("Enemy2"));
+	current_enemy->setTextureAndNumber(this->TextureStorage->GetTexture("Enemy2"),2);
 	break;
 	}
 	case 3:{
 	current_enemy->setMaxHealth(40);
 	current_enemy->setHealth(40);
-	current_enemy->setTexture(this->TextureStorage->GetTexture("Enemy3"));
-	//current_enemy->setTextureAndNumber(this->TextureStorage->GetTexture("Enemy3"),3);
+	//current_enemy->setTexture(this->TextureStorage->GetTexture("Enemy3"));
+	current_enemy->setTextureAndNumber(this->TextureStorage->GetTexture("Enemy3"),3);
 	break;
 	}
 	case 4:{
 	current_enemy->setMaxHealth(40);
 	current_enemy->setHealth(40);
-	current_enemy->setTexture(this->TextureStorage->GetTexture("Enemy4"));
-	//current_enemy->setTextureAndNumber(this->TextureStorage->GetTexture("Enemy4"),4);
+	//current_enemy->setTexture(this->TextureStorage->GetTexture("Enemy4"));
+	current_enemy->setTextureAndNumber(this->TextureStorage->GetTexture("Enemy4"),4);
 	break;
 	}
 	case 5:{
 	current_enemy->setMaxHealth(120);
 	current_enemy->setHealth(120);
-	current_enemy->setTexture(this->TextureStorage->GetTexture("Enemy5"));
-	//current_enemy->setTextureAndNumber(this->TextureStorage->GetTexture("Enemy5"),5);
+	//current_enemy->setTexture(this->TextureStorage->GetTexture("Enemy5"));
+	current_enemy->setTextureAndNumber(this->TextureStorage->GetTexture("Enemy5"),5);
 	break;
 	}
 	default:{

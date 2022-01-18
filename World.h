@@ -27,19 +27,20 @@ private:
 	int width;
 	int height;
 	int Key_Number;
-	std::vector<Cell*> _world;
 	std::vector<CellObject*> objects;
 	std::vector<Coords> key_coords;
 	Player* player;
-	int LocToArI(const int x, const int y);
 	template<class T> T* createObject(Cell* loc);
+protected:
+	std::vector<Cell*> _world;
+	int LocToArI(const int x, const int y);
 public:
 	TWorld();
 	~TWorld();
 	TTextureStorage *TextureStorage;
 	void InitializeWorld(const int width, const int height);
 	bool check_objects(Coords l);
-	Coords PopulateStartArea();
+	virtual Coords PopulateStartArea();
 	Cell* getCellByLoc(Coords loc);
 	Cell* getCellByLoc(const int x, const int y);
 	void DrawFrame(TDrawingScreen* Screen);

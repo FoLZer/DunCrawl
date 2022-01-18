@@ -1,14 +1,14 @@
 #pragma once
 
 //---------------------------------------------------------------------------
+
 #ifndef EnemyH
 #define EnemyH
 //---------------------------------------------------------------------------
 #endif
 
-#include "Cell.h"
-#include "CellObject.h"
 #include "Entity.h"
+#include "Texture.h"
 
 class Enemy : public Entity {
 private:
