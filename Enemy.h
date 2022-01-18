@@ -15,7 +15,6 @@ class Enemy : public Entity {
 	public:
 	Enemy(Cell* _loc);
 	~Enemy();
-	//using Entity::Entity;
 	void setNumber(int num);
 	int getNumber();
 	void setTextureAndNumber(TTexture* texture,int num);
