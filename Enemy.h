@@ -8,7 +8,6 @@
 #endif
 
 #include "Entity.h"
-#include "Texture.h"
 
 class Enemy : public Entity {
 private:
