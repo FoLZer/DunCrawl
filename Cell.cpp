@@ -11,11 +11,11 @@ Cell::Cell(Coords _loc) {
 }
 
 Coords Cell::getLoc() {
-    return this->loc;
+	return this->loc;
 }
 
 void Cell::setCoords(Coords _loc) {
-    this->loc = _loc;
+	this->loc = _loc;
 }
 
 void Cell::setTexture(TTexture* _texture) {
@@ -27,5 +27,5 @@ TTexture* Cell::getTexture() {
 }
 
 bool Cell::isPassable() {
-    return properties & PASSABLE;
+	return properties & PASSABLE;
 }
