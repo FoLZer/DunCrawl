@@ -7,6 +7,7 @@
 #endif
 
 #include "World.h"
+#include "Utils.h"
 
 class Arena : public TWorld {
 private:

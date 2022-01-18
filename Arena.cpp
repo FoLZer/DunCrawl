@@ -6,7 +6,6 @@
 #include <algorithm>
 #include <stdlib.h>
 #include <ctime>
-
 #include "Floor.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
