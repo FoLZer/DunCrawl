@@ -15,7 +15,7 @@ private:
 	std::vector<Coords> fire_exist_e;
 	CellObject* fire;
 	Enemy* enemy;
-	//template<class T> T* createObject(Cell* loc);
+    template<class T> T* createObject(Cell* loc);
 public:
 	using TWorld::TWorld;
 	Coords PopulateStartArea();

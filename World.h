@@ -6,20 +6,11 @@
 //---------------------------------------------------------------------------
 #endif
 
-#include <queue>
-
-#include "Cell.h"
-#include "CellObject.h"
-#include "Floor.h"
-#include "Water.h"
-#include "Wall.h"
-#include "Bridge.h"
-
+#include <vector>
 #include "Utils.h"
-#include "TextureStorage.h"
-#include "DrawingScreen.h"
+#include "CellObject.h"
 #include "Player.h"
-#include "Entity.h"
+#include "TextureStorage.h"
 #include "Enemy.h"
 
 class TWorld {
@@ -27,11 +18,11 @@ private:
 	int width;
 	int height;
 	int Key_Number;
-	std::vector<CellObject*> objects;
 	std::vector<Coords> key_coords;
 	Player* player;
 	template<class T> T* createObject(Cell* loc);
 protected:
+	std::vector<CellObject*> objects;
 	std::vector<Cell*> _world;
 	int LocToArI(const int x, const int y);
 public:

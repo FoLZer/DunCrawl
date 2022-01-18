@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <stdlib.h>
 #include <ctime>
+#include "Floor.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 const int x_dir[]={-1,1,0,0};
@@ -28,6 +29,14 @@ void Arena::SetupFire(Coords d){
 	 Floor* floor = static_cast<Floor*>(this->getCellByLoc(d));
 	 fire = this->createObject<MovableObject>(floor);
 	 fire->setTexture(this->TextureStorage->GetTexture("Fire1"));
+}
+
+template<class T> T* Arena::createObject(Cell* loc) {
+	T* obj = new T(loc);
+	int n = this->objects.capacity();
+	this->objects.reserve(objects.capacity() + 1);
+	this->objects.push_back(obj);
+	return obj;
 }
 
 void Arena::StartStep(Coords d) {

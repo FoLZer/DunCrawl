@@ -7,6 +7,12 @@
 #include <algorithm>
 #include <stdlib.h>
 #include <ctime>
+#include <queue>
+
+#include "Bridge.h"
+#include "Floor.h"
+#include "Wall.h"
+#include "Water.h"
 
 int CHUNK_SIZE = 64;
 const int CELL_SIZE = 50;

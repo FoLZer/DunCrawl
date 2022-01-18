@@ -8,7 +8,6 @@
 #endif
 
 #include "Cell.h"
-#include "Utils.h"
 
 class CellObject {
 private:

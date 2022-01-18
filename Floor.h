@@ -7,9 +7,7 @@
 //---------------------------------------------------------------------------
 #endif
 
-#include "CellObject.h"
 #include "Cell.h"
-#include "Texture.h"
 
 class Floor : public Cell {
 public:

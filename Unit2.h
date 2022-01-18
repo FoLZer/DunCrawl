@@ -1,3 +1,4 @@
+#pragma once
 //---------------------------------------------------------------------------
 
 #ifndef Unit2H
@@ -9,10 +10,7 @@
 #include <Vcl.Forms.hpp>
 #include <Vcl.ExtCtrls.hpp>
 #include "Unit1.h"
-#include "World.h"
-#include "MovableObject.h"
 #include "Arena.h"
-#include "Utils.h"
 #include <Vcl.ComCtrls.hpp>
 //---------------------------------------------------------------------------
 class TForm2 : public TForm
