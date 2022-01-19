@@ -162,24 +162,20 @@ int TArena::get_result()
 }
 
 void TArena::DrawFrame(TDrawingScreen* Screen) {
-	Cell* centerCell = this->player->getLoc();
-	Coords centerLoc = centerCell->getLoc();
 	Screen->Clear();
-	Screen->DrawTextureRepeat({{centerLoc.x*4,centerLoc.y*4},{Screen->getWidth(),Screen->getHeight()}},this->TextureStorage->GetTexture("Background"));
-	for(int x=std::max(centerLoc.x-7,0);x<=std::min(centerLoc.x+7,this->width-1);x++) {
-		for(int y=std::max(centerLoc.y-7,0);y<=std::min(centerLoc.y+7,this->height-1);y++) {
+	Screen->DrawTextureRepeat({{0,0},{Screen->getWidth(),Screen->getHeight()}},this->TextureStorage->GetTexture("Background"));
+	for(int x=0;x<=this->width-1;x++) {
+		for(int y=0;y<=this->height-1;y++) {
 			Cell* c = this->getCellByLoc(x,y);
 			if(c == NULL) {
 				continue;
 			}
-			c->DoRender(Screen,CELL_SIZE*(x-centerLoc.x)+Screen->getWidth()/2-(CELL_SIZE/2),CELL_SIZE*(y-centerLoc.y)+Screen->getHeight()/2-(CELL_SIZE/2),CELL_SIZE,CELL_SIZE);
+			c->DoRender(Screen,CELL_SIZE*x,CELL_SIZE*y,CELL_SIZE,CELL_SIZE);
 		}
 	}
 	for(int i = 0; i < this->objects.capacity(); i++) {
 		CellObject* obj = this->objects[i];
 		Coords loc = obj->getLoc()->getLoc();
-		if(std::abs(loc.x - centerLoc.x) < 8 && std::abs(loc.y - centerLoc.y) < 8) {
-			obj->DoRender(Screen,CELL_SIZE*(loc.x-centerLoc.x)+Screen->getWidth()/2-(CELL_SIZE/2),CELL_SIZE*(loc.y-centerLoc.y)+Screen->getHeight()/2-(CELL_SIZE/2),CELL_SIZE,CELL_SIZE);
-		}
+		obj->DoRender(Screen,CELL_SIZE*loc.x,CELL_SIZE*loc.y,CELL_SIZE,CELL_SIZE);
 	}
 }
