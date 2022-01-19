@@ -8,21 +8,12 @@
 #pragma package(smart_init)
 #pragma resource "*.dfm"
 TForm2 *Form2;
+int y_new=0;
+int x_new=0;
 //---------------------------------------------------------------------------
 __fastcall TForm2::TForm2(TComponent* Owner)
 	: TForm(Owner)
 {
-}
-//---------------------------------------------------------------------------
-void __fastcall TForm2::FormShow(TObject *Sender)
-{
-	type = StrToInt(Label1->Caption);
-	health = StrToInt(Label2->Caption);
-	this->Arena->PopulateStartArea();
-	this->Arena->SetupPlayer({0,1});
-	this->Arena->SetupEnemy({4,1},type);
-	stady=0;
-	this->Arena->set_result(0);
 }
 //---------------------------------------------------------------------------
 void TForm2::InitializeTextures() {
@@ -42,7 +33,6 @@ void TForm2::InitializeTextures() {
         	this->Arena->TextureStorage->DefineTexture("Enemy2", "textures/Enemy2.bmp", true);
         	this->Arena->TextureStorage->DefineTexture("Enemy3", "textures/Enemy3.bmp", true);
 			this->Arena->TextureStorage->DefineTexture("Enemy4", "textures/Enemy4.bmp", true);
-			this->Arena->TextureStorage->DefineTexture("Enemy5", "textures/Enemy5.bmp", true);
 			this->Arena->TextureStorage->DefineTexture("Enemy5", "textures/Enemy5.bmp", true);
 			this->Arena->TextureStorage->DefineTexture("Fire1", "textures/Fire1.bmp", true);
 }
@@ -68,6 +58,7 @@ void TForm2::LoadTextures() {
 }
 void __fastcall TForm2::FormCreate(TObject *Sender)
 {
+    this->Arena = new TArena();
 	this->DrawScreen = new TDrawingScreen(this->Image1);
 	this->InitializeTextures();
 	this->LoadTextures();
@@ -80,58 +71,84 @@ void __fastcall TForm2::Image1MouseDown(TObject *Sender, TMouseButton Button, TS
           int X, int Y)
 {
 	Coords d;
-	d.x = X/16;
-	d.y = Y/16;
+	d.x = X/50;
+	d.y = Y/50;
 	switch (stady){
 	case 0:
 	{
-	int x_new = d.x - this->Arena->getPlayer()->getLoc()->getLoc().x;
-	int y_new = d.y - this->Arena->getPlayer()->getLoc()->getLoc().y;
-	this->Arena->MovePlayer(x_new,y_new);
-    this->DrawFrame();
+	x_new = d.x;//this->Arena->getPlayer()->getLoc()->getLoc().x;
+	y_new = d.y + this->Arena->getPlayer()->getLoc()->getLoc().y;
+	this->Arena->MovePlayer(d.x, d.y);
+	this->DrawFrame();
+	stady = 1;
 	break;
 	}
 	case 1:
 	{
+	x_new = d.x;
+	y_new = d.y;
 	this->Arena->StartStep(d);
 	this->DrawFrame();
+	stady = 2;
+	break;
+	}
+	case 2:{
 	this->Arena->NPCStep();
-	this->Timer2->Enabled = true;
-	while(stady!=2){}
 	this->DrawFrame();
-	stady=3;
-	while(stady!=2){}
-	stady=0;
+	stady = 3;
+	break;}
+	case 3:{
 	this->Arena->DMGCalculating();
 	this->DrawFrame();
 	if(this->Arena->get_result()!=0)
 	{
-	   Label1->Caption = "";
-       Label2->Caption = "";
 	   Timer2->Enabled =true;
-	   MainForm->buld = this->Arena->getPlayer()->getHealth();
+	   int newHP = this->Arena->getPlayer()->getHealth();
 	   this->Arena->EraseObjectsTillEnd(0);
 	   Form2->Hide();
+	   MainForm->Show();
+	   MainForm->EnableAfterFight(newHP);
 	}
-	break;
+	stady = 0;
 	}
-	case 2:{break;}
 	}
 }
+
+void TForm2::InitNewArena(int playerHP, int enemy_type) {
+	this->Arena->PopulateStartArea();
+	this->Arena->SetupPlayer({0,1});
+    this->Arena->setPlayerHP(playerHP);
+	this->Arena->SetupEnemy({4,1},enemy_type);
+	stady=0;
+	this->Arena->set_result(0);
+    this->DrawFrame();
+}
+
 //---------------------------------------------------------------------------
 void TForm2::DrawFrame()
 {
-   this->Arena->DrawFrame(this->DrawScreen);
-   int health = this->Arena->getPlayer()->getHealth();
-   int maxHealth = this->Arena->getPlayer()->getMaxHealth();
-   int en_health = this->Arena->getEnemyHealth().x;
-   int en_maxHealth = this->Arena->getEnemyHealth().y;
-   this->DrawScreen->DrawText({10,10}, clRed, 15,"HP: "+IntToStr(health)+" / "+IntToStr(maxHealth));
+   	this->Arena->DrawFrame(this->DrawScreen);
+	int health = this->Arena->getPlayer()->getHealth();
+	int maxHealth = this->Arena->getPlayer()->getMaxHealth();
+	int en_health = this->Arena->getEnemyHealth().x;
+	int en_maxHealth = this->Arena->getEnemyHealth().y;
+	this->DrawScreen->DrawText({10,10}, clRed, 15,"HP: "+IntToStr(health)+" / "+IntToStr(maxHealth));
+	this->DrawScreen->DrawText({10,130}, clGreen, 15,"HP: "+IntToStr(x_new)+" / "+IntToStr(y_new));
+	this->DrawScreen->DrawText({10,110}, clRed, 15,"co: "+IntToStr(this->Arena->getPlayer()->getLoc()->getLoc().x)+" / "+IntToStr(this->Arena->getPlayer()->getLoc()->getLoc().y));
+	this->DrawScreen->Draw();
 }
+//---------------------------------------------------------------------------
 
-void __fastcall TForm2::Timer2Timer(TObject *Sender)
+void __fastcall TForm2::FormClose(TObject *Sender, TCloseAction &Action)
 {
-	 stady=2;
+    MainForm->Close();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm2::FormShow(TObject *Sender)
+{
+	stady=0;
+	this->DrawFrame();
 }
 //---------------------------------------------------------------------------
 

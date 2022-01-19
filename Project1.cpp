@@ -6,7 +6,6 @@
 USEFORM("Unit1.cpp", MainForm);
 USEFORM("Unit2.cpp", Form2);
 //---------------------------------------------------------------------------
-//---------------------------------------------------------------------------
 int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
 {
 	try

@@ -20,6 +20,7 @@ public:
 	~CellObject();
 	Cell* getLoc();
 	int getMarker();
+    void setMarker(int i);
 	void DoRender(TDrawingScreen* Screen,int x,int y,int width,int height);
 	void setTexture(TTexture* texture);
 };

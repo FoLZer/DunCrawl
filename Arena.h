@@ -22,7 +22,7 @@
 #include "Entity.h"
 #include "Enemy.h"
 
-class Arena : public TWorld {
+class TArena : public TWorld {
 private:
 	std::vector<Coords> fire_exist_p;
 	std::vector<Coords> fire_exist_e;
@@ -37,7 +37,9 @@ public:
 	void SetupEnemy(Coords coords,int type);
 	void NPCStep();
 	void DMGCalculating();
+	void MovePlayer(int r_x, int r_y);
 	Coords getEnemyHealth();
 	void set_result(int i);
 	int get_result();
+    void DrawFrame(TDrawingScreen* Screen);
 };

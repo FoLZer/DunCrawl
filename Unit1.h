@@ -14,6 +14,7 @@
 #include "World.h"
 #include "Unit2.h"
 #include <Vcl.ComCtrls.hpp>
+#include <mmsystem.h>
 //---------------------------------------------------------------------------
 class TMainForm : public TForm
 {
@@ -22,8 +23,6 @@ __published:	// IDE-managed Components
 	TMainMenu *MainMenu1;
 	TMenuItem *File1;
 	TMenuItem *N1;
-	TMenuItem *Saveprogress1;
-	TMenuItem *Downloadprogress1;
 	TMenuItem *Downloadprogress2;
 	TMenuItem *Exit1;
 	TMenuItem *Settings1;
@@ -37,6 +36,7 @@ __published:	// IDE-managed Components
 	TMenuItem *Knight1;
 	TMenuItem *Wizard1;
 	TTimer *Timer1;
+	TMenuItem *Sound;
 	void __fastcall FormCreate(TObject *Sender);
 	void __fastcall FormKeyPress(TObject *Sender, System::WideChar &Key);
 	void __fastcall N150x1501Click(TObject *Sender);
@@ -48,6 +48,7 @@ __published:	// IDE-managed Components
 	void __fastcall Rogue1Click(TObject *Sender);
 	void __fastcall Wizard1Click(TObject *Sender);
 	void __fastcall Timer1Timer(TObject *Sender);
+	void __fastcall SoundClick(TObject *Sender);
 private:	// User declarations
 	TDrawingScreen *DrawScreen;
 	TWorld *World;
@@ -58,10 +59,13 @@ private:	// User declarations
 	void InitializeWorld();
 	void DrawFrame();
 	void CreateWorld(int size);
+	void SetSoundtrack();
+	void StopSoundtrack();
+    int time;
 public:		// User declarations
 	__fastcall TMainForm(TComponent* Owner);
 	int player_type;
-    int buld;
+    void EnableAfterFight(int newHP);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TMainForm *MainForm;

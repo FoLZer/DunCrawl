@@ -15,15 +15,15 @@
 
 class TWorld {
 private:
-	int width;
-	int height;
 	int Key_Number;
 	std::vector<Coords> key_coords;
-	Player* player;
 protected:
 	std::vector<CellObject*> objects;
 	std::vector<Cell*> _world;
 	int LocToArI(const int x, const int y);
+    int width;
+	int height;
+	Player* player;
 public:
 	TWorld();
 	~TWorld();
@@ -34,7 +34,7 @@ public:
 	virtual Coords PopulateStartArea();
 	Cell* getCellByLoc(Coords loc);
 	Cell* getCellByLoc(const int x, const int y);
-	void DrawFrame(TDrawingScreen* Screen);
+	virtual void DrawFrame(TDrawingScreen* Screen);
 	void SetupPlayer(Coords coords);
 	void SetupEnemy(Coords coords,int type);
 	void SetupKey(Coords coords);
@@ -42,7 +42,7 @@ public:
 	int Keys_Left();
 	int Keys_Number();
 	void setPlayerHP(int a);
-	void MovePlayer(int r_x, int r_y);
+	virtual void MovePlayer(int r_x, int r_y);
 	void ChangePlayerTexture(int num);
 	Player* getPlayer();
 	void EraseObjectsTillEnd(int b);
