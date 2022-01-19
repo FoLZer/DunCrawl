@@ -69,8 +69,8 @@ void __fastcall TForm2::Image1MouseDown(TObject *Sender, TMouseButton Button, TS
           int X, int Y)
 {
 	Coords d;
-	d.x = X/16;
-	d.y = Y/16;
+	d.x = X/50;
+	d.y = Y/50;
 	switch (stady){
 	case 0:
 	{
