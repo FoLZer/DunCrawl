@@ -119,19 +119,12 @@ void __fastcall TMainForm::FormKeyPress(TObject *Sender, System::WideChar &Key)
         int a=0;
 		while(a!=-2)
 		{
-		   a=this->World->check_objects(this->World->getPlayer()->getLoc()->getLoc());
-		   if(a!=-2)
-		   {
-		      Form2->Show();
-			  Form2->Label1->Caption=IntToStr(player_type);
-			  Form2->Label2->Caption=IntToStr(this->World->getPlayer()->getHealth());
-			  buld=-20;
-			  while(buld == -20){
-			  MainForm->Enabled = false;
-			  }
-			  MainForm->Enabled = true;
-			  this->World->setPlayerHP(this->World->getPlayer()->getHealth()-1);
-		   }
+			a=this->World->check_objects(this->World->getPlayer()->getLoc()->getLoc());
+			if(a!=-2) {
+				Form2->InitNewArena(this->World->getPlayer()->getHealth(), a);
+				Form2->Show();
+				MainForm->Hide();
+			}
 		}
 		int t =this->World->Check_Key_Player();
 		if(this->World->Keys_Left()==0)
@@ -141,6 +134,12 @@ void __fastcall TMainForm::FormKeyPress(TObject *Sender, System::WideChar &Key)
 		this->DrawFrame();
 	}
 }
+
+void TMainForm::EnableAfterFight(int newHP) {
+	this->World->setPlayerHP(newHP);
+	MainForm->Show();
+}
+
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::N150x1501Click(TObject *Sender)
 {

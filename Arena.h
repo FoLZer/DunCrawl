@@ -22,7 +22,7 @@
 #include "Entity.h"
 #include "Enemy.h"
 
-class Arena : public TWorld {
+class TArena : public TWorld {
 private:
 	std::vector<Coords> fire_exist_p;
 	std::vector<Coords> fire_exist_e;
@@ -40,4 +40,5 @@ public:
 	Coords getEnemyHealth();
 	void set_result(int i);
 	int get_result();
+    void DrawFrame(TDrawingScreen* Screen);
 };

@@ -61,7 +61,7 @@ private:	// User declarations
 public:		// User declarations
 	__fastcall TMainForm(TComponent* Owner);
 	int player_type;
-    int buld;
+    void EnableAfterFight(int newHP);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TMainForm *MainForm;
