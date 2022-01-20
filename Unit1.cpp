@@ -27,6 +27,14 @@ void __fastcall TMainForm::FormCreate(TObject *Sender)
 	this->CreateWorld(54);
 	delay = 0;
 	Timer1->Enabled = true;
+	time = 0;
+	//SetSoundtrack();
+}
+void TMainForm::SetSoundtrack(){
+   PlaySoundA("textures/sound.wav",NULL,SND_ASYNC|SND_LOOP);
+}
+void TMainForm::StopSoundtrack(){
+	sndPlaySound(NULL, 0);
 }
 //---------------------------------------------------------------------------
 void TMainForm::DrawFrame() {
@@ -36,18 +44,23 @@ void TMainForm::DrawFrame() {
 	int maxHealth = p->getMaxHealth();
 	this->DrawScreen->DrawText({10,10}, clRed, 15,"HP: "+IntToStr(health)+" / "+IntToStr(maxHealth));
 	this->DrawScreen->DrawText({10,35}, clYellow, 15,"Keys: "+IntToStr(this->World->Keys_Number() - this->World->Keys_Left())+" / "+IntToStr(this->World->Keys_Number()));
+	this->DrawScreen->DrawText({10,60}, clMaroon, 15,"Time: "+IntToStr(time / 600)+":"+IntToStr((time % 600)/10));
 	if(game_finished){
 	this->DrawScreen->DrawText({10,100}, clBlue, 85,"   Game");
 	this->DrawScreen->DrawText({10,210}, clBlue, 85,"  finished");
 	}
+	if(this->World->getPlayer()->getHealth()<=0){
+	this->DrawScreen->DrawText({10,100}, clBlue, 85,"  YOU");
+	this->DrawScreen->DrawText({10,210}, clBlue, 85,"  LOSE");
+	}
 	this->DrawScreen->Draw();
 }
-
 void TMainForm::CreateWorld(int size) {
 	this->World->InitializeWorld(size,size);
 	Coords c = this->World->PopulateStartArea();
 	this->World->SetupPlayer(c);
 	this->DrawFrame();
+	time = 0;
 }
 void TMainForm::InitializeTextures() {
 	//Define textures here
@@ -91,7 +104,7 @@ void TMainForm::InitializeWorld() {
 void __fastcall TMainForm::FormKeyPress(TObject *Sender, System::WideChar &Key)
 {
 	bool redraw = false;
-	if(delay>1 && (!game_finished)){
+	if(delay>1 && (!game_finished)&&(this->World->getPlayer()->getHealth()>0)){
 		switch(Key) {
 		case KEY_UP: {
 			this->World->MovePlayer(0,-1);
@@ -117,6 +130,17 @@ void __fastcall TMainForm::FormKeyPress(TObject *Sender, System::WideChar &Key)
 		delay=0;
 	}
 	if(redraw) {
+		int a=0;
+		while(a!=-2)
+		{
+			a=this->World->check_objects(this->World->getPlayer()->getLoc()->getLoc());
+			if(a!=-2) {
+				MainForm->Timer1->Enabled=false;
+				Form2->InitNewArena(this->World->getPlayer()->getHealth(), a);
+				Form2->Show();
+				MainForm->Hide();
+			}
+		}
 		int t =this->World->Check_Key_Player();
 		if(this->World->Keys_Left()==0)
 		{
@@ -124,6 +148,11 @@ void __fastcall TMainForm::FormKeyPress(TObject *Sender, System::WideChar &Key)
 		}
 		this->DrawFrame();
 	}
+}
+void TMainForm::EnableAfterFight(int newHP) {
+	this->World->setPlayerHP(newHP);
+	MainForm->Show();
+	MainForm->Timer1->Enabled=true;
 }
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::N150x1501Click(TObject *Sender)
@@ -150,36 +179,55 @@ void __fastcall TMainForm::Knight1Click(TObject *Sender)
 {
 	 this->World->ChangePlayerTexture(1);
 	 this->DrawFrame();
+	 this->player_type = 1;
 }
 //---------------------------------------------------------------------------
-
 void __fastcall TMainForm::Rogue2Click(TObject *Sender)
 {
 	 this->World->ChangePlayerTexture(3);
 	 this->DrawFrame();
+	 this->player_type = 3;
 }
 //---------------------------------------------------------------------------
-
 void __fastcall TMainForm::Rogue1Click(TObject *Sender)
 {
 	 this->World->ChangePlayerTexture(2);
 	 this->DrawFrame();
+	 this->player_type = 2;
 }
 //---------------------------------------------------------------------------
-
 void __fastcall TMainForm::Wizard1Click(TObject *Sender)
 {
 	 this->World->ChangePlayerTexture(4);
 	 this->DrawFrame();
+	 this->player_type = 4;
 }
 //---------------------------------------------------------------------------
-
-
 void __fastcall TMainForm::Timer1Timer(TObject *Sender)
 {
+	  if((game_finished==false)&&((this->World->getPlayer()->getHealth()>0)))
+	  time++;
 	  delay++;
-	  if(delay > 100)
-	  delay = 10;
+	  if(delay > 10)
+	  {
+	  this->DrawFrame();
+	  delay = 8;
+	  }
+}
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::SoundClick(TObject *Sender)
+{
+
+	if(this->Sound->Checked == false)
+	{
+	   this->Sound->Checked = true;
+	   StopSoundtrack();
+	}
+	else
+	{
+	   this->Sound->Checked = false;
+	   SetSoundtrack();
+	}
 }
 //---------------------------------------------------------------------------
 

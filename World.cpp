@@ -7,6 +7,12 @@
 #include <algorithm>
 #include <stdlib.h>
 #include <ctime>
+#include <queue>
+
+#include "Bridge.h"
+#include "Floor.h"
+#include "Wall.h"
+#include "Water.h"
 
 int CHUNK_SIZE = 64;
 const int CELL_SIZE = 50;
@@ -34,13 +40,26 @@ int TWorld::LocToArI(const int x, const int y) {
 	return x * this->width + y;
 }
 
-bool TWorld::check_objects(Coords coords){
+int TWorld::check_objects(Coords coords){
 	 for(int i=0;i<objects.size();i++){
 		for (int j=0;j<4;j++)
 		  if(objects[i]->getLoc()->getLoc().x + x_bfs[j] == coords.x && objects[i]->getLoc()->getLoc().y + y_bfs[j] == coords.y)
-			return false;
+			{
+			if(objects[i]->getMarker()!=0)
+				{
+				int a=objects[i]->getMarker();
+				objects.erase(objects.begin()+i);
+				i--;
+				return a;
+				}
+			}
 	 }
-	 return true;
+	 return -2;
+}
+
+void TWorld::setPlayerHP(int a){
+	player->setHealth(a);
+	return;
 }
 
 Coords TWorld::PopulateStartArea() {
@@ -340,10 +359,10 @@ Coords TWorld::PopulateStartArea() {
 					c = new Bridge({i1,i});
 					c->setTexture(this->TextureStorage->GetTexture("Bridge"));
 					bool FLag=false;
-					if(number_of_keys<5){
+					if(number_of_keys<6){
 					 FLag=true;
 					 for(int j=0;j<key_coords.size();j++){
-					   if(sqrt((key_coords[i].x - i1)*(double)(key_coords[i].x - i1) + (key_coords[i].y - i)*(key_coords[i].x - i1))<CHUNK_SIZE/4)
+					   if(sqrt((key_coords[j].x - i1)*(double)(key_coords[j].x - i1) + (key_coords[j].y - i)*(key_coords[j].y - i))<CHUNK_SIZE/5)
 					   {
 							 FLag=false;
 							 break;
@@ -370,20 +389,23 @@ Coords TWorld::PopulateStartArea() {
 					c = new Floor({i1,i});
 					c->setTexture(this->TextureStorage->GetTexture("StoneFloor"));
 					bool Flag=true;
-					if(number_of_keys<5){
+					if(number_of_keys<6){
 					 for(int j=0;j<key_coords.size();j++){
-					   if(sqrt((key_coords[i].x - i1)*(double)(key_coords[i].x - i1) + (key_coords[i].y - i)*(key_coords[i].x - i1))>CHUNK_SIZE/5)
+					   if(sqrt((key_coords[j].x - i1)*(double)(key_coords[j].x - i1) + (key_coords[j].y - i)*(key_coords[j].y - i))<CHUNK_SIZE/2.85)
 					   {
 							 Flag=false;
 							 break;
 					   }
 					 }
+					 if((number_of_keys>3) && (i<CHUNK_SIZE*0.66))
+					 {Flag=false;}
 					}
-					if(Flag==false){
+					if(Flag==true && number_of_keys<6 && (rand()%20>17)){
 					   number_of_keys++;
 					   key_coords.push_back({i1,i});
 					   break;
 					}
+					Flag=true;
 					if(!enemy_place.empty()){
 					   Coords checker, locker;
 					   checker.y = i1;
@@ -408,11 +430,11 @@ Coords TWorld::PopulateStartArea() {
 					   (map_[i+1][i1] == 'w');
 					   switch (counter) {
 						case 0:{
-						counter=1;
+						counter=5;
 						break;
 						}
 						case 1:{
-						counter=10;
+						counter=6;
 						break;
 						}
 						case 2:{
@@ -420,7 +442,7 @@ Coords TWorld::PopulateStartArea() {
 						break;
 						}
 						case 3:{
-						counter=50;
+						counter=56;
 						break;
 						}
 					   }
@@ -531,7 +553,7 @@ void TWorld::DrawFrame(TDrawingScreen* Screen) {
 		if(std::abs(loc.x - centerLoc.x) < 8 && std::abs(loc.y - centerLoc.y) < 8) {
 			obj->DoRender(Screen,CELL_SIZE*(loc.x-centerLoc.x)+Screen->getWidth()/2-(CELL_SIZE/2),CELL_SIZE*(loc.y-centerLoc.y)+Screen->getHeight()/2-(CELL_SIZE/2),CELL_SIZE,CELL_SIZE);
 		}
-    }
+	}
 }
 
 void TWorld::SetupPlayer(Coords coords) {
@@ -645,5 +667,13 @@ void TWorld::ChangePlayerTexture (int num){
 	break;
 	}
 	}
+}
+
+void TWorld::EraseObjectsTillEnd(int b){
+   for(int i=0;i<objects.size();i++)
+   {
+		if(objects[i]->getMarker() == -22)
+		{objects.erase(objects.begin()+i);}
+   }
 }
 

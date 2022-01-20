@@ -34,12 +34,6 @@ object MainForm: TMainForm
         Caption = 'New game'
         OnClick = FormCreate
       end
-      object Saveprogress1: TMenuItem
-        Caption = 'Save progress'
-      end
-      object Downloadprogress1: TMenuItem
-        Caption = 'Download progress'
-      end
       object Downloadprogress2: TMenuItem
         Caption = 'Leaderbords'
       end
@@ -87,10 +81,13 @@ object MainForm: TMainForm
           OnClick = Wizard1Click
         end
       end
+      object Sound: TMenuItem
+        Caption = 'Turn off sound'
+        OnClick = SoundClick
+      end
     end
   end
   object Timer1: TTimer
-    Enabled = False
     Interval = 15
     OnTimer = Timer1Timer
     Left = 288

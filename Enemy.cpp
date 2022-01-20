@@ -12,7 +12,7 @@ Enemy::~Enemy(){}
 
 void Enemy::setTextureAndNumber(TTexture* texture,int num){
 	this->setTexture(texture);
-   	this->number=num;
+	this->marker=num;
 }
 
 void Enemy::setNumber(int num){
