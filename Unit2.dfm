@@ -3,7 +3,7 @@ object Form2: TForm2
   Top = 0
   Caption = 'Buttle frame'
   ClientHeight = 200
-  ClientWidth = 200
+  ClientWidth = 250
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -19,7 +19,7 @@ object Form2: TForm2
   object Image1: TImage
     Left = 0
     Top = 0
-    Width = 200
+    Width = 250
     Height = 200
     OnMouseDown = Image1MouseDown
   end

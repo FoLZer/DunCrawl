@@ -27,18 +27,18 @@ Coords TArena::PopulateStartArea() {
     return {1,1};
 }
 
-void TArena::SetupFire(Coords d){
+void TArena::SetupFire(Coords d) {
 	 Floor* floo = static_cast<Floor*>(this->getCellByLoc(d));
 	 fire = this->createObject<CellObject>(floo);
 	 fire->setTexture(this->TextureStorage->GetTexture("Fire1"));
      fire->setMarker(-22);
 }
 
-Coords TArena::getEnemyHealth(){
-		Coords d;
-		d.x = enemy->getHealth();
-		d.y = enemy->getMaxHealth();
-		return d;
+Coords TArena::getEnemyHealth() {
+	Coords d;
+	d.x = enemy->getHealth();
+	d.y = enemy->getMaxHealth();
+	return d;
 }
 
 void TArena::StartStep(Coords d) {
@@ -105,53 +105,58 @@ void TArena::NPCStep() {
 	 d.x=rand() % 5;
 	 int a=d.x;
 	 for(int i=0;i<4;i++){
-	 d.y=i;
-	 SetupFire(d);
-	 fire_exist_e.push_back(d);
+		d.y=i;
+		this->SetupFire(d);
+		fire_exist_e.push_back(d);
 	 }
 	 d.y=rand() % 4;
 	 for(int i=0;i<5;i++){
-	 d.x=i;
-	 SetupFire(d);
-	 fire_exist_e.push_back(d);
+		d.x=i;
+		this->SetupFire(d);
+		fire_exist_e.push_back(d);
 	 }
 	 d.x = a;
 	 Coords f;
 	 f.x=rand() % 5;
 	 f.y=rand() % 4;
-	 while(f.x==d.x || f.y==d.y)
-	 {
-     f.x=rand()%5;
-	 f.y=rand()%4;
+	 while(f.x==d.x || f.y==d.y) {
+		f.x=rand()%5;
+		f.y=rand()%4;
 	 }
-	 Cell* h;
-	 h->setCoords(f);
+	 Cell* h = this->getCellByLoc(f);
 	 enemy->MoveTo(h);
 }
 
 void TArena::DMGCalculating(){
-   for(int i=0;i<fire_exist_e.size();i++){
-	 if(fire_exist_e[i].x == this->getPlayer()->getLoc()->getLoc().x && fire_exist_e[i].y == this->getPlayer()->getLoc()->getLoc().y)
-	 {this->setPlayerHP(this->getPlayer()->getHealth()-20);}
-   }
-   for(int i=0;i<fire_exist_p.size();i++){
-	 if(fire_exist_e[i].x == this->getPlayer()->getLoc()->getLoc().x && fire_exist_e[i].y == this->getPlayer()->getLoc()->getLoc().y)
-	 {this->setPlayerHP(this->getPlayer()->getHealth()-20);}
-	 if(fire_exist_e[i].x == this->enemy->getLoc()->getLoc().x && fire_exist_e[i].y == this->enemy->getLoc()->getLoc().y)
-	 {this->setPlayerHP(this->getPlayer()->getHealth()-20);}
-   }
-   if(this->getPlayer()->getHealth()<1)
-   {
-   result=-1;
-   }
-   if(this->enemy->getHealth() < 1)
-   {
-   this->enemy->setHealth(0);
-   result=1;
-   }
-   fire_exist_e.erase(fire_exist_e.begin(),fire_exist_e.end());
-   fire_exist_p.erase(fire_exist_p.begin(),fire_exist_p.end());
-   this->EraseObjectsTillEnd(2);
+	for(int i=0;i<fire_exist_e.size();i++) {
+		if(fire_exist_e[i].x == this->getPlayer()->getLoc()->getLoc().x && fire_exist_e[i].y == this->getPlayer()->getLoc()->getLoc().y) {
+			this->setPlayerHP(this->getPlayer()->getHealth()-20);
+		}
+	}
+	for(int i=0;i<fire_exist_p.size();i++) {
+		if(fire_exist_e[i].x == this->getPlayer()->getLoc()->getLoc().x && fire_exist_e[i].y == this->getPlayer()->getLoc()->getLoc().y) {
+			this->setPlayerHP(this->getPlayer()->getHealth()-20);
+		}
+		if(fire_exist_e[i].x == this->enemy->getLoc()->getLoc().x && fire_exist_e[i].y == this->enemy->getLoc()->getLoc().y) {
+			this->setPlayerHP(this->getPlayer()->getHealth()-20);
+		}
+	}
+	if(this->getPlayer()->getHealth()<1) {
+		result=-1;
+	}
+	if(this->enemy->getHealth() < 1) {
+		this->enemy->setHealth(0);
+		result=1;
+	}
+	fire_exist_e.clear();
+	fire_exist_p.clear();
+	for(auto it = this->objects.begin(); it!=this->objects.end(); ++it) {
+		CellObject* obj = *it;
+		if(obj->getMarker() == -22) {
+			delete obj;
+            this->objects.erase(it);
+        }
+	}
 }
 
 void TArena::set_result(int i)
@@ -183,7 +188,13 @@ void TArena::DrawFrame(TDrawingScreen* Screen) {
 }
 
 void TArena::MovePlayer(int r_x, int r_y){
-   Cell* c;
-   c->setCoords({r_x,r_y});
+   Cell* c = this->getCellByLoc(r_x,r_y);
    this->player->MoveTo(c);
+}
+
+void TArena::Clear() {
+	for(CellObject* obj : this->objects) {
+        delete obj;
+	}
+    this->objects.clear();
 }

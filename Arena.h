@@ -41,5 +41,6 @@ public:
 	Coords getEnemyHealth();
 	void set_result(int i);
 	int get_result();
-    void DrawFrame(TDrawingScreen* Screen);
+	void DrawFrame(TDrawingScreen* Screen);
+    void Clear();
 };

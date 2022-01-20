@@ -45,5 +45,4 @@ public:
 	virtual void MovePlayer(int r_x, int r_y);
 	void ChangePlayerTexture(int num);
 	Player* getPlayer();
-	void EraseObjectsTillEnd(int b);
 };

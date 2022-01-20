@@ -8,8 +8,6 @@
 #pragma package(smart_init)
 #pragma resource "*.dfm"
 TForm2 *Form2;
-int y_new=0;
-int x_new=0;
 //---------------------------------------------------------------------------
 __fastcall TForm2::TForm2(TComponent* Owner)
 	: TForm(Owner)
@@ -74,43 +72,38 @@ void __fastcall TForm2::Image1MouseDown(TObject *Sender, TMouseButton Button, TS
 	d.x = X/50;
 	d.y = Y/50;
 	switch (stady){
-	case 0:
-	{
-	x_new = d.x;//this->Arena->getPlayer()->getLoc()->getLoc().x;
-	y_new = d.y + this->Arena->getPlayer()->getLoc()->getLoc().y;
-	this->Arena->MovePlayer(d.x, d.y);
-	this->DrawFrame();
-	stady = 1;
-	break;
-	}
-	case 1:
-	{
-	x_new = d.x;
-	y_new = d.y;
-	this->Arena->StartStep(d);
-	this->DrawFrame();
-	stady = 2;
-	break;
-	}
-	case 2:{
-	this->Arena->NPCStep();
-	this->DrawFrame();
-	stady = 3;
-	break;}
-	case 3:{
-	this->Arena->DMGCalculating();
-	this->DrawFrame();
-	if(this->Arena->get_result()!=0)
-	{
-	   Timer2->Enabled =true;
-	   int newHP = this->Arena->getPlayer()->getHealth();
-	   this->Arena->EraseObjectsTillEnd(0);
-	   Form2->Hide();
-	   MainForm->Show();
-	   MainForm->EnableAfterFight(newHP);
-	}
-	stady = 0;
-	}
+		case 0: {
+			this->Arena->MovePlayer(d.x, d.y);
+			this->DrawFrame();
+			stady = 1;
+			break;
+		}
+		case 1: {
+			this->Arena->StartStep(d);
+			this->DrawFrame();
+			stady = 2;
+			break;
+		}
+		case 2: {
+			this->Arena->NPCStep();
+			this->DrawFrame();
+			stady = 3;
+			break;
+		}
+		case 3: {
+			this->Arena->DMGCalculating();
+			this->DrawFrame();
+			if(this->Arena->get_result()!=0)
+			{
+				Timer2->Enabled =true;
+				int newHP = this->Arena->getPlayer()->getHealth();
+				this->Arena->Clear();
+				Form2->Hide();
+				MainForm->Show();
+			   	MainForm->EnableAfterFight(newHP);
+			}
+			stady = 0;
+		}
 	}
 }
 
@@ -118,7 +111,7 @@ void TForm2::InitNewArena(int playerHP, int enemy_type) {
 	this->Arena->PopulateStartArea();
 	this->Arena->SetupPlayer({0,1});
     this->Arena->setPlayerHP(playerHP);
-	this->Arena->SetupEnemy({4,1},enemy_type);
+	this->Arena->SetupEnemy({3,1},enemy_type);
 	stady=0;
 	this->Arena->set_result(0);
     this->DrawFrame();
@@ -133,7 +126,6 @@ void TForm2::DrawFrame()
 	int en_health = this->Arena->getEnemyHealth().x;
 	int en_maxHealth = this->Arena->getEnemyHealth().y;
 	this->DrawScreen->DrawText({10,10}, clRed, 15,"HP: "+IntToStr(health)+" / "+IntToStr(maxHealth));
-	this->DrawScreen->DrawText({10,130}, clGreen, 15,"HP: "+IntToStr(x_new)+" / "+IntToStr(y_new));
 	this->DrawScreen->DrawText({10,110}, clRed, 15,"co: "+IntToStr(this->Arena->getPlayer()->getLoc()->getLoc().x)+" / "+IntToStr(this->Arena->getPlayer()->getLoc()->getLoc().y));
 	this->DrawScreen->Draw();
 }

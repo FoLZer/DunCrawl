@@ -28,6 +28,9 @@ TWorld::~TWorld() {
 		delete c;
 	}
 	this->_world.clear();
+	for(CellObject* obj : this->objects) {
+        delete obj;
+    }
 	this->objects.clear();
 }
 Cell* TWorld::getCellByLoc(Coords loc) {
@@ -668,12 +671,3 @@ void TWorld::ChangePlayerTexture (int num){
 	}
 	}
 }
-
-void TWorld::EraseObjectsTillEnd(int b){
-   for(int i=0;i<objects.size();i++)
-   {
-		if(objects[i]->getMarker() == -22)
-		{objects.erase(objects.begin()+i);}
-   }
-}
-
